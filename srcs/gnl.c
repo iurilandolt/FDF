@@ -6,23 +6,14 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:58:18 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/18 18:42:28 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/18 21:23:27 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "gnl.h"
-#include "fdf.h"
+#include "../include/fdf.h"
+#include "../include/gnl.h"
 
-t_list	*get_last(t_list *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next)
-		lst = lst->next;
-	return (lst);
-}
-
-void	append_list(t_list **lst, char *buffer)
+static void	append_list(t_list **lst, char *buffer)
 {
 	t_list	*new;
 	t_list	*last;
@@ -39,35 +30,7 @@ void	append_list(t_list **lst, char *buffer)
 	new->next = NULL;
 }
 
-void	append_string(t_list *lst, char *str)
-{
-	int	i;
-	int	j;
-
-	if (!lst)
-		return ;
-	j = 0;
-	while (lst)
-	{
-		i = 0;
-		while (lst->buffer[i])
-		{
-			if (lst->buffer[i] == '\n')
-			{
-				str[j] = '\n';
-				str[j + 1] = '\0';
-				return ;
-			}
-			str[j] = lst->buffer[i];
-			i++;
-			j++;
-		}
-		lst = lst->next;
-	}
-	str[j] = '\0';
-}
-
-void	cleanup(t_list **lst, t_list *new, char *buffer)
+static void	cleanup(t_list **lst, t_list *new, char *buffer)
 {
 	t_list	*tmp;
 
@@ -90,7 +53,7 @@ void	cleanup(t_list **lst, t_list *new, char *buffer)
 	}
 }
 
-void mantain_list(t_list **lst)
+static void	mantain_list(t_list **lst)
 {
 	t_list	*new;
 	t_list	*last;
@@ -117,64 +80,7 @@ void mantain_list(t_list **lst)
 	cleanup(lst, new, buffer);
 }
 
-int	has_newline(t_list *lst)
-{
-	int i;
-	if (!lst)
-		return (0);
-	while (lst)
-	{
-		i = 0;
-		while (lst->buffer[i] && i < BUFFER_SIZE)
-		{
-			if (lst->buffer[i] == '\n')
-				return (1);
-			i++;
-		}
-		lst = lst->next;
-	}
-	return (0);
-}
-
-int	line_len(t_list *lst)
-{
-	int	i;
-	int	len;
-
-	if (!lst)
-		return (0);
-	len = 0;
-	while (lst)
-	{
-		i = 0;
-		while (lst->buffer[i])
-		{
-			if (lst->buffer[i] == '\n')
-				return(len + 1);
-			i++;
-			len++;
-		}
-		lst = lst->next;
-	}
-	return(len);
-}
-
-char *get_line(t_list *lst)
-{
-	int		len;
-	char	*line;
-
-	if (!lst)
-		return (NULL);
-	len = line_len(lst);
-	line = (char *)malloc(len * sizeof(char) + 1);
-	if (!line)
-		return (NULL);
-	append_string(lst, line);
-	return (line);
-}
-
-void init_list(t_list **lst, int fd)
+static void	init_list(t_list **lst, int fd)
 {
 	int c_read;
 	char *buffer;
@@ -195,7 +101,7 @@ void init_list(t_list **lst, int fd)
 	}
 }
 
-char *get_next_line(int fd)
+char	*get_next_line(int fd)
 {
 	static	t_list *lst;
 	char	*next_line;
@@ -210,6 +116,7 @@ char *get_next_line(int fd)
 	return (next_line);
 }
 
+/*
 int	open_file(char *argv, int *filein)
 {
 	if ((*filein = open(argv, O_RDONLY)) <= 0)
@@ -237,3 +144,4 @@ int	main(int argc, char **argv)
 	close(filein);
 	return(0);
 }
+*/
