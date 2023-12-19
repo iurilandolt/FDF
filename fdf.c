@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/19 19:18:32 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/19 19:22:51 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,26 +52,26 @@ int	check_format(char *argv, int *filein)
 	int		lines;
 	char	*line;
 
-	if (open_file(argv[1], &filein) > 0)
+	if (open_file(argv[1], filein) > 0)
 	{
 		lines = 0;
-		if (line = get_next_line(filein))
+		if (line = get_next_line(*filein))
 		{
 			lines++;
 			len_control = ft_strlen(line);
 			free(line);
-			while ((line = get_next_line(filein)))
+			while ((line = get_next_line(*filein)))
 			{
 				len = ft_strlen(line);
 				free(line);
 				if (len != len_control)
 				{
-					close(&filein);
-					return(-1);
+					close(*filein);
+					return (-1);
 				}
 				lines++;
 			}
-			close(&filein);
+			close(*filein);
 			return(lines);
 		}
 	}
