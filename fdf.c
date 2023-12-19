@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/18 22:10:50 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/19 19:18:32 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,32 +20,64 @@ int	open_file(char *argv, int *filein)
 	return (*filein);
 }
 
+
 int	check_fext(char *path, char const *ext)
 {
 	int	i;
 	int j;
 
 	i = 0;
-	while(path[i])
+	if (!path[i])
+		return 0;
+	while(path[i++])
 	{
 		j = 0;
-		while(path[i] && path[i] == ext[j])
+		while (path[i] && path[i] != '.')
+			i++;
+		while(path[i] && path[i] == ext[j++])
 		{
 			i++;
-			j++;
 			if (!ext[j])
 				return (1);
 		}
-		i++;
 	}
 	return (0);
 }
-/*
+
+
 int	check_format(char *argv, int *filein)
 {
+	int		len_control;
+	int		len;
+	int		lines;
+	char	*line;
 
+	if (open_file(argv[1], &filein) > 0)
+	{
+		lines = 0;
+		if (line = get_next_line(filein))
+		{
+			lines++;
+			len_control = ft_strlen(line);
+			free(line);
+			while ((line = get_next_line(filein)))
+			{
+				len = ft_strlen(line);
+				free(line);
+				if (len != len_control)
+				{
+					close(&filein);
+					return(-1);
+				}
+				lines++;
+			}
+			close(&filein);
+			return(lines);
+		}
+	}
+	return (0);
 }
-*/
+
 
 int	main(int argc, char **argv)
 {
@@ -63,6 +95,7 @@ int	main(int argc, char **argv)
 				printf("%s", line);
 				free(line);
 			}
+			printf("\n");
 		}
 	}
 	close(filein);

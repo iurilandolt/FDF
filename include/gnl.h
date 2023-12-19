@@ -6,12 +6,12 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:58:12 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/18 21:23:13 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/19 11:19:57 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-	# define GET_NEXT_LINE_H
+#ifndef GNL_H
+	# define GNL_H
 #endif
 
 #ifndef BUFFER_SIZE
