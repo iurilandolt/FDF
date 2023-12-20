@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:02:48 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/20 19:47:09 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/20 20:10:10 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	check_fext(char *path, char const *ext)
 	return (0);
 }
 
-int	check_fformat(int filein)
+int	check_fformat(t_session *instance, int filein)
 {
 	int		len;
 	int		lines;
@@ -47,11 +47,9 @@ int	check_fformat(int filein)
 	{
 		++lines;
 		len = fdf_strlen(line);
-
 		free(line);
 		while ((line = get_next_line(filein)))
 		{
-			printf("%d : %d\n", len, fdf_strlen(line));
 			if (fdf_strlen(line) != len)
 			{
 				free(line);
@@ -61,10 +59,11 @@ int	check_fformat(int filein)
 			++lines;
 		}
 	}
+	instance->height = lines;
 	return(lines);
 }
 
-int	open_file(char *argv)
+int	open_file(t_session *instance, char *argv)
 {
 	int filein;
 
@@ -72,10 +71,9 @@ int	open_file(char *argv)
 		return (-1);
 	if (!check_fext(argv, ".fdf"))
 		return (-1);
-	if (check_fformat(filein) < 3)
+	if (check_fformat(instance, filein) < 3)
 		return (-1);
 	close(filein);
 	filein = open(argv, O_RDONLY);
-	printf("%d FUCKKK\n", filein);
 	return (filein);
 }

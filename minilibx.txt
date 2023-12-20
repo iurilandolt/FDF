@@ -11,3 +11,11 @@ https://harm-smits.github.io/42docs/libs/minilibx/getting_started.html#installat
 https://github.com/VBrazhnik/FdF/tree/master
 
 -lmlx -lX11 -lXext -lm
+
+https://42-cursus.gitbook.io/guide/
+https://github.com/m4nnb3ll/fdf
+https://github.com/suiramdev/42-fdf/
+https://github.com/mbdanielcrespo/ft_fdf
+https://github.com/thebrisly/42-Cursus-Piscine/tree/master/FdF
+https://github.com/Laendrun/42-fdf
+https://github.com/duarte3333/FdF_Wireframe_model
