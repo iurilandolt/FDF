@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/20 17:50:09 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/20 19:46:19 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	free_2d_grid(int **grid, int height);
 void	print_2d_grid(int **grid, int height, int width);
 //input check and file open
 int		check_fext(char *path, char const *ext);
-int		check_fformat(int *filein);
-int		open_file(char *argv, int *filein);
+int		check_fformat(int filein);
+int		open_file(char *argv);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:02:48 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/20 18:03:15 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/20 19:47:09 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,20 +36,22 @@ int	check_fext(char *path, char const *ext)
 	return (0);
 }
 
-int	check_fformat(int *filein)
+int	check_fformat(int filein)
 {
 	int		len;
 	int		lines;
 	char	*line;
 
 	lines = 0;
-	if ((line = get_next_line(*filein)))
+	if ((line = get_next_line(filein)))
 	{
 		++lines;
 		len = fdf_strlen(line);
+
 		free(line);
-		while ((line = get_next_line(*filein)))
+		while ((line = get_next_line(filein)))
 		{
+			printf("%d : %d\n", len, fdf_strlen(line));
 			if (fdf_strlen(line) != len)
 			{
 				free(line);
@@ -62,15 +64,18 @@ int	check_fformat(int *filein)
 	return(lines);
 }
 
-int	open_file(char *argv, int *filein)
+int	open_file(char *argv)
 {
-	if ((*filein = open(argv, O_RDONLY)) <= 0)
+	int filein;
+
+	if ((filein = open(argv, O_RDONLY)) <= 0)
 		return (-1);
 	if (!check_fext(argv, ".fdf"))
 		return (-1);
 	if (check_fformat(filein) < 3)
 		return (-1);
-	close(*filein);
-	*filein = open(argv, O_RDONLY);
-	return (*filein);
+	close(filein);
+	filein = open(argv, O_RDONLY);
+	printf("%d FUCKKK\n", filein);
+	return (filein);
 }
