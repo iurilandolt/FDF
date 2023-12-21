@@ -6,12 +6,13 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/20 20:46:26 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/21 13:51:54 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/fdf.h"
 #include "include/gnl.h"
+#include ".minilibx/mlx.h"
 
 void	gen_source(t_session *instance, int filein)
 {
@@ -56,10 +57,13 @@ int	main(int argc, char **argv)
 		{
 			gen_source(instance, filein);
 		}
+		instance->mlx_ser = mlx_init();
+		instance->mlx_win = mlx_new_window(instance->mlx_ser, WIDTH, HEIGHT, "Untitled Window");
+		mlx_loop(instance->mlx_ser);
+		free(instance);
+		close(filein);
 		printf("\n");
 	}
-	free(instance);
-	close(filein);
 	return(0);
 }
 

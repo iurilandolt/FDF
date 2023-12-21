@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/20 20:46:45 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/21 13:51:06 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <errno.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include <mlx.h>
+
 #include <math.h>
 #include <stdio.h>
 
@@ -40,11 +40,12 @@ typedef struct s_session
 	int		**source;
 	int		height;
 	int		width;
-	void	*mlx;
-	void	*win;
-
-
+	void	*mlx_ser;
+	void	*mlx_win;
 }	t_session;
+
+#define WIDTH 1920
+#define HEIGHT 1080
 
 // string methods
 int		fdf_strlen(char *str);

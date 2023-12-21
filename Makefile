@@ -6,13 +6,15 @@
 #    By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/18 21:16:33 by rlandolt          #+#    #+#              #
-#    Updated: 2023/12/20 20:25:45 by rlandolt         ###   ########.fr        #
+#    Updated: 2023/12/21 13:48:15 by rlandolt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = fdf.a
 
 SRC_PATH = ./srcs
+MLX = .minilibx/libmlx.a
+MLX_FLAGS = -L.minilibx -Lmlx -L/usr/lib -Imlx -lXext -lX11 -lm -lz
 
 SRC = fdf.c \
 	$(SRC_PATH)/gnl.c \
@@ -23,14 +25,17 @@ SRC = fdf.c \
 	$(SRC_PATH)/2D_array.c \
 	$(SRC_PATH)/input.c \
 
-CC = cc
+CC = cc -g
 CFLAGS = -Wall -Wextra -Werror
 
 OBJ = $(SRC:.c=.o)
 
 $(NAME): $(OBJ)
 		ar -rcs $@ $(OBJ)
-		cc -g -o fdf fdf.a
+		${CC} -o fdf ${NAME} $(MLX) $(MLX_FLAGS)
+
+$(MLX):
+	make -C .minilibx
 
 all: $(NAME)
 
@@ -42,4 +47,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all, bonus, clean, fclean, re
+.PHONY: all, clean, fclean, re
