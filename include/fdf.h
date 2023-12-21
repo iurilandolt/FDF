@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/21 13:51:06 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/21 15:42:19 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@ typedef struct s_vector3
 	int	z;
 }	t_vector3;
 
+typedef struct	s_data {
+	void	*img;
+	char	*addr;
+	int		bits_per_pixel;
+	int		line_length;
+	int		endian;
+}				t_data;
+
 typedef struct s_session
 {
 	int		**source;
@@ -42,10 +50,11 @@ typedef struct s_session
 	int		width;
 	void	*mlx_ser;
 	void	*mlx_win;
+	t_data	mlx_img;
 }	t_session;
 
-#define WIDTH 1920
-#define HEIGHT 1080
+#define W_WIDTH 1920
+#define W_HEIGHT 1080
 
 // string methods
 int		fdf_strlen(char *str);
@@ -69,5 +78,8 @@ void	print_2d_grid(int **grid, int height, int width);
 int		check_fext(char *path, char const *ext);
 int		check_fformat(t_session *instance, int filein);
 int		open_file(t_session *instance, char *argv);
+
+//libx methods
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 
 #endif
