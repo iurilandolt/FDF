@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/21 15:45:13 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/21 16:51:52 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int*)dst = color;
 }
 
-
-
-void draw_array_points(t_data *data, int **array, int rows, int cols)
+void draw_array_cells(t_data *data, int **array, int rows, int cols)
 {
 	int width = W_WIDTH / cols;   // Calculate width of each rectangle
 	int height = W_HEIGHT / rows; // Calculate height of each rectangle
@@ -61,7 +59,7 @@ void draw_array_points(t_data *data, int **array, int rows, int cols)
 	{
 		for (int x = 0; x < cols; ++x)
 		{
-			int color = array[y][x] * 10; // Use the value in the array as the color
+			int color = array[y][x] * 10;
 			int startX = x * width;
 			int startY = y * height;
 
@@ -77,6 +75,25 @@ void draw_array_points(t_data *data, int **array, int rows, int cols)
 	}
 }
 
+void draw_array_points(t_data *data, int **array, int rows, int cols)
+{
+	// Calculate the size of each square
+	int dx = W_WIDTH / cols;
+	int dy = W_HEIGHT / rows;
+
+	for (int i = 0; i < rows; ++i)
+	{
+		for (int j = 0; j < cols; ++j)
+		{
+			int color = array[i][j] * 25;
+			int x_center = j * dx + dx / 2; // Calculate the center x-coordinate
+			int y_center = i * dy + dy / 2; // Calculate the center y-coordinate
+
+			// Draw a single point for each cell
+			my_mlx_pixel_put(data, x_center, y_center, color);
+		}
+	}
+}
 
 
 int	main(int argc, char **argv)
@@ -93,21 +110,16 @@ int	main(int argc, char **argv)
 		if (filein > 2)
 		{
 			gen_source(instance, filein);
+			instance->mlx_ser = mlx_init();
+			instance->mlx_win = mlx_new_window(instance->mlx_ser, W_WIDTH,W_HEIGHT, "fml");
+			instance->mlx_img.img= mlx_new_image(instance->mlx_ser, W_WIDTH, W_HEIGHT);
+			instance->mlx_img.addr = mlx_get_data_addr(instance->mlx_img.img, &instance->mlx_img.bits_per_pixel,
+													&instance->mlx_img.line_length, &instance->mlx_img.endian);
+
+			draw_array_points(&instance->mlx_img, instance->source, instance->height, instance->width);
+			mlx_put_image_to_window(instance->mlx_ser, instance->mlx_win, instance->mlx_img.img, 0, 0);
+			mlx_loop(instance->mlx_ser);
 		}
-		instance->mlx_ser = mlx_init();
-		instance->mlx_win = mlx_new_window(instance->mlx_ser, W_WIDTH,W_HEIGHT, "fml");
-		instance->mlx_img.img= mlx_new_image(instance->mlx_ser, W_WIDTH, W_HEIGHT);
-		instance->mlx_img.addr = mlx_get_data_addr(instance->mlx_img.img, &instance->mlx_img.bits_per_pixel,
-												&instance->mlx_img.line_length, &instance->mlx_img.endian);
-
-
-		draw_array_points(&instance->mlx_img, instance->source, instance->height, instance->width);
-
-
-		mlx_put_image_to_window(instance->mlx_ser, instance->mlx_win, instance->mlx_img.img, 0, 0);
-		mlx_loop(instance->mlx_ser);
-
-
 		free(instance);
 		close(filein);
 		printf("\n");
