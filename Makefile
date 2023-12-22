@@ -6,7 +6,7 @@
 #    By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/18 21:16:33 by rlandolt          #+#    #+#              #
-#    Updated: 2023/12/21 13:48:15 by rlandolt         ###   ########.fr        #
+#    Updated: 2023/12/22 17:58:58 by rlandolt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,9 +21,9 @@ SRC = fdf.c \
 	$(SRC_PATH)/gnl_utils.c \
 	$(SRC_PATH)/strings.c \
 	$(SRC_PATH)/split.c \
-	$(SRC_PATH)/3D_array.c \
-	$(SRC_PATH)/2D_array.c \
 	$(SRC_PATH)/input.c \
+	$(SRC_PATH)/draw.c \
+	$(SRC_PATH)/struct.c \
 
 CC = cc -g
 CFLAGS = -Wall -Wextra -Werror

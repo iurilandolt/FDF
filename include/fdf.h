@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/22 13:39:58 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/22 18:13:42 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,19 +28,18 @@ typedef struct s_vector2
 	int	y;
 }	t_vector2;
 
-typedef struct s_vector3
+typedef struct s_point
 {
-	int	x;
-	int	y;
-	int	z;
-}	t_vector3;
+	int		x;
+	int		y;
+	int		z;
+	char	c[12];
+}	t_point;
 
 typedef struct s_transform
 {
-	double x;
-	double y;
-	double angle;
-	double radian_angle;
+	float angle;
+	float radian_angle;
 }	t_transform;
 
 typedef struct	s_data {
@@ -53,8 +52,8 @@ typedef struct	s_data {
 
 typedef struct s_session
 {
-	int		**source;
-	int		**projection;
+	t_point	**source;
+	t_point	**projection;
 	int		height;
 	int		width;
 	void	*mlx_ser;
@@ -76,20 +75,18 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 void	*clear(char **array);
 char	**ft_split(const char *str, char c);
 
-//3D Array methods
-int		***alloc_3d_grid(int height, int width, int depth);
-void	free_3d_grid(int ***grid, int height, int width);
-void	print_3d_grid(int ***grid, int height, int width, int depth);
-//2D Array methods
-int		**alloc_2d_grid(int height, int width);
-void	free_2d_grid(int **grid, int height);
-void	print_2d_grid(int **grid, int height, int width);
+//t_point methods
+void	gen_t_points(t_session *instance, int filein);
+void	print_t_points(t_point **grid, int height, int width);
+void	free_t_points(t_point **grid, int height);
+
 //input check and file open
 int		check_fext(char *path, char const *ext);
 int		check_fformat(t_session *instance, int filein);
 int		open_file(t_session *instance, char *argv);
 
-//libx methods
+//draw methods
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
+void	draw_points(t_data *img, t_point **src, int rows, int cols);
 
 #endif
