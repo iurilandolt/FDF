@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:02:48 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/20 20:10:10 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/22 12:51:10 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ int	check_fext(char *path, char const *ext)
 	return (0);
 }
 
+// we could count line cell amount using spaces instead of counting tokens
 int	check_fformat(t_session *instance, int filein)
 {
 	int		len;
@@ -60,6 +61,7 @@ int	check_fformat(t_session *instance, int filein)
 		}
 	}
 	instance->height = lines;
+	instance->width = 0;
 	return(lines);
 }
 

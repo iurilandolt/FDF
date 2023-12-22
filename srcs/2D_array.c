@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/19 18:25:36 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/19 18:25:58 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/22 15:11:30 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,53 +15,54 @@
 int		**alloc_2d_grid(int width, int height)
 {
 	int **grid;
-	int x;
 	int y;
+	int x;
 
 	grid = (int **)malloc(sizeof(int *) * height);
-    x = 0;
-	while (x < height)
+    y = 0;
+	while (y < height)
 	{
-		grid[x] = (int *)malloc(sizeof(int) * width);
-		y = 0;
-		while (y < width)
+		grid[y] = (int *)malloc(sizeof(int) * width);
+		x = 0;
+		while (x < width)
 		{
-			grid[x][y] = 0;
-			y++;
+			grid[y][x] = 0;
+			x++;
 		}
-		x++;
+		y++;
 	}
 	return(grid);
 }
 
 void	free_2d_grid(int **grid, int height)
 {
-	int	x;
+	int	y;
 
-	x = 0;
-	while (x < height)
+	y = 0;
+	while (y < height)
 	{
 
-		free(grid[x]);
-		x++;
+		free(grid[y]);
+		y++;
 	}
 	free(grid);
 }
 
 void	print_2d_grid(int **grid, int height, int width)
 {
-	int x, y;
+	int y, x;
 
-	x = 0;
-	while (x < height)
+	y = 0;
+	while (y < height)
 	{
-		y = 0;
-		while (y < width)
+		x = 0;
+		while (x < width)
 		{
-			printf("%d ", grid[x][y]);
-			y++;
+			printf("%-3d ", grid[y][x]);
+			x++;
 		}
 		printf("\n");
-		x++;
+		y++;
 	}
+	printf("\n");
 }

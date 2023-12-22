@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/21 15:42:19 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/22 13:39:58 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,14 @@ typedef struct s_vector3
 	int	z;
 }	t_vector3;
 
+typedef struct s_transform
+{
+	double x;
+	double y;
+	double angle;
+	double radian_angle;
+}	t_transform;
+
 typedef struct	s_data {
 	void	*img;
 	char	*addr;
@@ -46,6 +54,7 @@ typedef struct	s_data {
 typedef struct s_session
 {
 	int		**source;
+	int		**projection;
 	int		height;
 	int		width;
 	void	*mlx_ser;
@@ -55,6 +64,7 @@ typedef struct s_session
 
 #define W_WIDTH 1920
 #define W_HEIGHT 1080
+#define M_PI 3.14159265358979323846
 
 // string methods
 int		fdf_strlen(char *str);
