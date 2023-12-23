@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/23 15:16:40 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/23 16:47:42 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,10 @@ typedef struct s_session
 	t_point	**projection;
 	int		height;
 	int		width;
-//	int		max_z;
+	int		zoom;
+	int		steepness;
+	int		shift_x;
+	int		shift_y;
 	void	*mlx_ser;
 	void	*mlx_win;
 	t_data	mlx_img;

@@ -6,20 +6,21 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/23 15:13:28 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/23 18:34:02 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../.minilibx/mlx.h"
 
-void	my_mlx_pixel_put(t_data *data, int y, int x, int color)
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
 	char	*dst;
-	if (x < 0 && x >= W_WIDTH && y < 0 && y >= W_HEIGHT)
+
+	if (x < 0 || y < 0 || x > W_WIDTH || y > W_HEIGHT)
 		return ;
 	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int*)dst = color;
+	*(unsigned int *)dst = color;
 }
 /*
 void	draw_points(t_data *img, t_point **src, int rows, int cols)

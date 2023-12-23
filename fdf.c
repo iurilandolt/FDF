@@ -6,78 +6,12 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/23 16:02:41 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/23 19:02:08 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/fdf.h"
 #include ".minilibx/mlx.h"
-
-void	isometric_transform(t_session *instance)
-{
-	t_transform	new;
-	t_vector2	i;
-	t_vector3	d;
-
-
-	instance->projection = (t_point**)malloc(sizeof(t_point *) * instance->height);
-	new.angle = 30.0;
-	new.radian_angle = new.angle * M_PI / 180.0;
-	new.z_scale = 0.5;
-	i.y = 0;
-	while (i.y < instance->height)
-	{
-		i.x = 0;
-		instance->projection[i.y] =  (t_point *)malloc(sizeof(t_point) * instance->width);
-		while (i.x < instance->width)
-		{
-			d.y = (float)instance->source[i.y][i.x].y;
-			d.x = (float)instance->source[i.y][i.x].x;
-			d.z = (float)instance->source[i.y][i.x].z * new.z_scale;
-
-
-			instance->projection[i.y][i.x].y = (d.x + d.y) * sin(new.radian_angle) - d.z;
-			instance->projection[i.y][i.x].x = (d.x - d.y) * cos(new.radian_angle);
-			instance->projection[i.y][i.x].z = instance->source[i.y][i.x].z;
-
-			i.x++;
-		}
-		i.y++;
-	}
-	printf("Projection\n");
-	print_t_points_info(instance->projection, instance->height, instance->width);
-}
-
-void convert_points(t_point **src, int rows, int cols)
-{
-	float aspect_ratio = (float)W_WIDTH / W_HEIGHT;
-	float grid_aspect_ratio = (float)(cols - 1) / (rows - 1);
-
-	float d_x, d_y;
-	if (grid_aspect_ratio > aspect_ratio)
-	{
-		// Window is taller than grid aspect ratio, so fit to width and center vertically
-		d_x = (float)(W_WIDTH - 1) / (cols - 1);
-		d_y = d_x / grid_aspect_ratio;
-	} else
-	{
-		// Window is wider than grid aspect ratio, so fit to height and center horizontally
-		d_y = (float)(W_HEIGHT - 1) / (rows - 1);
-		d_x = d_y * grid_aspect_ratio;
-	}
-
-	float x_offset = (W_WIDTH - d_x * (cols - 1)) / 2;
-	float y_offset = (W_HEIGHT - d_y * (rows - 1)) / 2;
-
-	for (int y = 0; y < rows; y++)
-	{
-		for (int x = 0; x < cols; x++)
-		{
-			src[y][x].x = x * d_x + x_offset;
-			src[y][x].y = y * d_y + y_offset;
-		}
-	}
-}
 
 int get_color_based_on_z(int z)
 {
@@ -88,6 +22,37 @@ int get_color_based_on_z(int z)
 	return (z > 0) ? red : blue; // Red for non-zero z, blue for zero
 }
 
+/*
+void	breshenham(t_session *instance, t_point pt1, t_point pt2)
+{
+	float	x_step;
+	float	y_step;
+	float	ratio;
+	int		max;
+	int		c;
+
+	c = 0;
+	ratio = 0;
+	x_step = pt2.x - pt1.x;
+	y_step = pt2.y - pt1.y;
+	max = fmax(fabs(x_step), fabs(y_step));
+	x_step /= max;
+	y_step /= max;
+
+	int col_start = get_color_based_on_z(pt1.z); // Convert p0.z to a color
+	int col_end = get_color_based_on_z(pt2.z); // Convert p1.z to a color
+
+	while (((int)(pt1.x - pt2.x) || (int)(pt1.y - pt2.y)) && c <= max) //
+	{
+		ratio = (float)c / max;
+		printf("Drawing pixel at (%.2f, %.2f) with color %x\n", pt1.x + x_step * c, pt1.y + y_step * c, get_color(ratio, col_start, col_end));
+		my_mlx_pixel_put(&(instance->mlx_img), pt1.x, pt1.y, get_color(ratio, col_start, col_end));
+		pt1.x += x_step;
+		pt1.y += y_step;
+		c++;
+	}
+}
+*/
 void breshenham(t_data *img, t_point p0, t_point p1)
 {
 	float x_step = p1.x - p0.x;
@@ -108,20 +73,111 @@ void breshenham(t_data *img, t_point p0, t_point p1)
 	}
 }
 
-void draw_points(t_data *img, t_point **src, int rows, int cols)
+void	set_zoom(t_session *instance, t_point *pt1, t_point *pt2)
 {
-	t_vector2 i;
+	pt1->x *= instance->zoom;
+	pt1->y *= instance->zoom;
+	pt2->x *= instance->zoom;
+	pt2->y *= instance->zoom;
+}
 
-	for (i.y = 0; i.y < rows; i.y++)
+void	set_steepness(t_session *instance, int *z, int *z1)
+{
+	*z *= instance->steepness;
+	*z1 *= instance->steepness;
+}
+
+void	set_shift(t_session *instance, t_point *pt1, t_point *pt2)
+{
+	pt1->x += instance->shift_x;
+	pt1->y += instance->shift_y;
+	pt2->x += instance->shift_x;
+	pt2->y += instance->shift_y;
+}
+
+void set_isometric(t_point *p, int z) {
+	p->x = (p->x - p->y) * cos(0.8);
+	p->y = (p->x + p->y) * sin(0.8) - z;
+}
+
+void	set_parallel(t_point *p, int z)
+{
+	p->x = p->x - z;
+	p->y = p->y - z;
+}
+
+void	projection(t_point *pt1, t_point *pt2, t_point zpt)
+{
+		//set_isometric(pt1, zpt.x);
+		//set_isometric(pt2, zpt.y);
+
+		set_parallel(pt1, zpt.x);
+		set_parallel(pt2, zpt.y);
+}
+
+void	draw_line(t_session *instance, t_point pt1, t_point pt2)
+{
+	int		z;
+	int		z1;
+	t_point	zpt;
+
+	z = instance->source[(int)pt1.y][(int)pt1.x].z;
+	z1 = instance->source[(int)pt2.y][(int)pt2.x].z;
+	set_zoom(instance, &pt1, &pt2);
+	set_steepness(instance, &z, &z1);
+	zpt.x = z;
+	zpt.y = z1;
+	projection(&pt1, &pt2, zpt);
+	set_shift(instance, &pt1, &pt2);
+	breshenham(&(instance->mlx_img), pt1, pt2);
+}
+
+void	draw2(t_session *instance, t_point *pt1, t_point *pt2, t_point *curr_pt)
+{
+	if (curr_pt->x < (instance->width - 1))
 	{
-		for (i.x = 0; i.x < cols; i.x++)
-		{
-			if (i.x < cols - 1)
-				breshenham(img, src[i.y][i.x], src[i.y][i.x + 1]);
-			if (i.y < rows - 1)
-				breshenham(img, src[i.y][i.x], src[i.y + 1][i.x]);
-		}
+		pt1->x = curr_pt->x;
+		pt1->y = curr_pt->y;
+		pt2->x = curr_pt->x + 1;
+		pt2->y = curr_pt->y;
+		draw_line(instance,*pt1, *pt2);
 	}
+	if (curr_pt->y < (instance->height - 1))
+	{
+		pt1->x = curr_pt->x;
+		pt1->y = curr_pt->y;
+		pt2->x = curr_pt->x;
+		pt2->y = curr_pt->y + 1;
+		draw_line(instance,*pt1, *pt2);
+	}
+}
+
+void	draw(t_session *instance)
+{
+	t_point	curr_pt;
+	t_point	pt1;
+	t_point	pt2;
+
+	curr_pt.y = 0;
+	while (curr_pt.y < (instance->height - 1))
+	{
+		curr_pt.x = 0;
+		while (curr_pt.x < instance->width - 1)
+		{
+			draw2(instance, &pt1, &pt2, &curr_pt);
+			curr_pt.x++;
+		}
+		curr_pt.y++;
+	}
+	print_t_points_info(instance->source, instance->height, instance->width);
+}
+
+void	init_fdf(t_session *instance)
+{
+	instance->shift_x = 10; //W_WIDTH / 2;
+	instance->shift_y = 10; //W_HEIGHT / 2;
+	instance->zoom = 25;
+	instance->steepness = 3;
 }
 
 int	main(int argc, char **argv)
@@ -145,11 +201,8 @@ int	main(int argc, char **argv)
 			instance->mlx_img.addr = mlx_get_data_addr(instance->mlx_img.img, &instance->mlx_img.bits_per_pixel,
 													&instance->mlx_img.line_length, &instance->mlx_img.endian);
 
-
-			//convert_points(instance->source, instance->height, instance->width);
-			//isometric_transform(instance);
-			convert_points(instance->source, instance->height, instance->width);
-			draw_points(&instance->mlx_img, instance->source, instance->height, instance->width);
+			init_fdf(instance);
+			draw(instance);
 
 			mlx_put_image_to_window(instance->mlx_ser, instance->mlx_win, instance->mlx_img.img, 0, 0);
 			mlx_loop(instance->mlx_ser);
