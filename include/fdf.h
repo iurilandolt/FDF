@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/22 18:13:42 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/23 15:16:40 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,13 @@ typedef struct s_vector2
 	int	y;
 }	t_vector2;
 
+typedef struct s_vector3
+{
+	float x;
+	float y;
+	float z;
+}	t_vector3;
+
 typedef struct s_point
 {
 	int		x;
@@ -38,8 +45,9 @@ typedef struct s_point
 
 typedef struct s_transform
 {
-	float angle;
-	float radian_angle;
+	float	angle;
+	float	radian_angle;
+	float	z_scale;
 }	t_transform;
 
 typedef struct	s_data {
@@ -56,6 +64,7 @@ typedef struct s_session
 	t_point	**projection;
 	int		height;
 	int		width;
+//	int		max_z;
 	void	*mlx_ser;
 	void	*mlx_win;
 	t_data	mlx_img;
@@ -79,6 +88,7 @@ char	**ft_split(const char *str, char c);
 void	gen_t_points(t_session *instance, int filein);
 void	print_t_points(t_point **grid, int height, int width);
 void	free_t_points(t_point **grid, int height);
+void print_t_points_info(t_point **grid, int height, int width);
 
 //input check and file open
 int		check_fext(char *path, char const *ext);
@@ -88,5 +98,7 @@ int		open_file(t_session *instance, char *argv);
 //draw methods
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	draw_points(t_data *img, t_point **src, int rows, int cols);
-
+//color
+int	get_color(float ratio, int col_start, int col_end);
+int	interpolate(int start, int end, float ratio);
 #endif
