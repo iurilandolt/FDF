@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:06:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/24 14:50:31 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/24 17:50:24 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void scale_zoom(t_session *instance, t_point *start, t_point *end) {
 
 */
 
+//offset might be read/set from/to session struct
 void	center_isometric(t_point *start, t_point *end)
 {
 	t_vector2	offset;
