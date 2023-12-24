@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/23 22:26:11 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/24 14:47:05 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef struct s_session
 	t_point	**source;
 	int		height;
 	int		width;
-
+	float	factor;
 	void	*mlx_ser;
 	void	*mlx_win;
 	t_data	mlx_img;
@@ -78,7 +78,7 @@ typedef struct s_session
 #define W_HEIGHT 1080
 
 // string methods
-int		fdf_strlen(char *str);
+int		fdf_strlen(char *str); // change to count words
 int		ft_atoi(char *str);
 int		tab_size(char **array);
 size_t	ft_strlen(const char *s);
@@ -105,6 +105,8 @@ void	draw_map(t_session *instance);
 
 //transform methods
 void	transform_map(t_session *instance, t_point *start, t_point *end);
+void	scale_map(t_session *instance, t_point *start, t_point *end);
+void	center_isometric(t_point *start, t_point *end);
 //color
 int	get_color(float ratio, int col_start, int col_end);
 int	interpolate(int start, int end, float ratio);

@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/23 22:34:19 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/24 14:29:01 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 int get_color_based_on_z(int z)
 {
-	int blue = 0x0000FF;
-	int red = 0xFF0000;
-	return (z > 0) ? red : blue;
+	return (z > 0) ? 0xFF0000 : 0x0000FF;
 }
 
 static void	bresenham_define(t_bresenham *param, t_point *start, t_point *end)
@@ -65,6 +63,7 @@ void	draw_line(t_session *instance, t_point *start, t_point *end)
 	while (1)
 	{
 		float ratio = (float)c / max;
+		c++;
 		if (param.x0 < W_WIDTH && param.x0 > 0 && param.y0 < W_HEIGHT && param.y0 > 0)
 			my_mlx_pixel_put(&instance->mlx_img, param.x0, param.y0, get_color(ratio, col_start, col_end));
 		if (param.x0 == end->x && param.y0 == end->y)
@@ -122,6 +121,7 @@ void	draw_map(t_session *instance)
 	int	y;
 
 	y = 0;
+
 	while (y < instance->height)
 	{
 		x = 0;

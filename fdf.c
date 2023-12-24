@@ -6,13 +6,55 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/23 22:36:32 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/24 16:56:35 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "include/fdf.h"
 #include ".minilibx/mlx.h"
+#include ".minilibx/mlx_int.h"
 
+void	destroy_mlx(t_session *instance)
+{
+	if (instance->mlx_img.img)
+	{
+		printf("destroying image\n");
+		mlx_destroy_image(instance->mlx_ser, instance->mlx_img.img);
+	}
+	if (instance->mlx_win)
+	{
+		printf("destroying window\n");
+		mlx_destroy_window(instance->mlx_ser, instance->mlx_win);
+		instance->mlx_win = NULL;
+	}
+	if (instance->mlx_ser)
+	{
+		printf("destroying mlx\n");
+		mlx_destroy_display(instance->mlx_ser);
+		free(instance->mlx_ser);
+	}
+	free_t_points(instance->source, instance->height);
+	free(instance);
+	exit(0);
+}
+
+
+int	esc_pressed(int keycode, t_session *instance)
+{
+	printf("keycode: %d\n", keycode);
+	if (keycode == 65307)
+		destroy_mlx(instance);
+	return (0);
+}
+
+int window_closed(XEvent *event, t_session *instance)
+{
+	(void)event;
+	printf("Window close event triggered.\n");
+	if(event->type == DestroyNotify || event->type == StructureNotifyMask)
+		destroy_mlx(instance);
+    return (0);
+}
 
 int	main(int argc, char **argv)
 {
@@ -38,18 +80,21 @@ int	main(int argc, char **argv)
 			draw_map(instance);
 
 			mlx_put_image_to_window(instance->mlx_ser, instance->mlx_win, instance->mlx_img.img, 0, 0);
+
+
+			mlx_hook(instance->mlx_win, DestroyNotify, StructureNotifyMask, window_closed, instance);
+			mlx_hook(instance->mlx_win, 2, 1L<<0, esc_pressed, instance);
 			mlx_loop(instance->mlx_ser);
 
 
 
 
-			free_t_points(instance->source, instance->height);
+
 
 		}
-		free(instance);
-		close(filein);
-		printf("\n");
+		//free(instance);
+		//close(filein);
+		printf("fdf has left the building\n");
 	}
 	return(0);
 }
-
