@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 13:48:01 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 17:17:10 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 18:53:11 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,19 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-int get_color_based_on_z(int z)
-{
-	return (z > 0) ? 0xFF0000 : 0x0000FF;
-}
-
 void	init_color(t_bresenham param, t_color *color, t_point *start, t_point *end)
 {
 	color->max = fmax(fabs((float)param.dx), fabs((float)param.dy));
 	if (start->c == 0)
 	{
-		color->c_start = get_color_based_on_z(start->z);
-		color->c_end = get_color_based_on_z(end->z);
+		if (start->z > 0)
+			color->c_start = 0xFF2000;
+		else
+			color->c_start = 0x2000FF;
+		if (end->z > 0)
+			color->c_end = 0xFF2000;
+		else
+			color->c_end = 0x2000FF;
 	}
 	else
 	{
@@ -61,4 +62,20 @@ int	get_color(float ratio, int col_start, int col_end)
 	return ((r << 16) | (g << 8) | b);
 }
 
+void	clear_image(t_session *instance, int color)
+{
+	t_vector2	i;
 
+	i.y = 0;
+	mlx_clear_window(instance->mlx_ser, instance->mlx_win);
+	while (i.y < W_HEIGHT)
+	{
+		i.x = 0;
+		while (i.x < W_WIDTH)
+		{
+			my_mlx_pixel_put(&(instance->mlx_img), i.x, i.y, color);
+			i.x++;
+		}
+		i.y++;
+	}
+}

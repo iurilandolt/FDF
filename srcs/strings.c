@@ -6,21 +6,11 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:03:02 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 17:04:00 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 18:17:56 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	pos;
-
-	pos = 0;
-	while (*s++)
-		pos++;
-	return (pos);
-}
 
 int	tab_size(char **array)
 {
@@ -49,7 +39,7 @@ int ft_atoi(char *str)
 	return (n * sign);
 }
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t size)
+void	ft_strlcpy(char *dest, const char *src, size_t size)
 {
 	size_t	i;
 
@@ -61,7 +51,6 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 	}
 	if (size - i != 0)
 		*(dest + i) = '\0';
-	return (ft_strlen(src));
 }
 
 int hextoint(char c) {
@@ -75,23 +64,23 @@ int hextoint(char c) {
 }
 
 int ft_atohex(const char *str) {
-    int result = 0;
-    int digit;
+	int result = 0;
+	int digit;
 
-    // Skip leading spaces and tabs
-    while (*str == ' ' || *str == '\t')
-        str++;
+	// Skip leading spaces and tabs
+	while (*str == ' ' || *str == '\t')
+		str++;
 
-    // Handle optional 0x or 0X prefix
-    if (*str == '0' && (*(str + 1) == 'x' || *(str + 1) == 'X'))
-        str += 2;
+	// Handle optional 0x or 0X prefix
+	if (*str == '0' && (*(str + 1) == 'x' || *(str + 1) == 'X'))
+		str += 2;
 
-    // Convert hex digits to integer value
-    while ((digit = hextoint(*str)) != -1) {
-        result = result * 16 + digit;
-        str++;
-    }
+	// Convert hex digits to integer value
+	while ((digit = hextoint(*str)) != -1) {
+		result = result * 16 + digit;
+		str++;
+	}
 
-    return result;
+	return result;
 }
 

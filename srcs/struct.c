@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 17:53:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 17:12:22 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 18:20:24 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,24 @@
 #include "../include/gnl.h"
 #include "../.minilibx/mlx.h"
 
+void	set_t_point_values(t_point *point, int x, int y, char *tab)
+{
+	char		**color;
+
+	color = ft_split(tab, ',');
+	point->x = x;
+	point->y = y;
+	point->z = ft_atoi(tab);
+	point->c = 0;
+	if (color[1])
+		point->c = ft_atohex(color[1]);
+	clear(color);
+}
+
 void	build_t_point_grid(t_session *instance, int filein)
 {
 	char		*line;
 	char		**tab;
-	char		**color;
 	t_vector2	i;
 
 	i.y = 0;
@@ -31,13 +44,7 @@ void	build_t_point_grid(t_session *instance, int filein)
 		instance->source[i.y] =  (t_point *)malloc(sizeof(t_point) * instance->width);
 		while (tab[i.x] && i.x < instance->width)
 		{
-			color = ft_split(tab[i.x], ',');
-			instance->source[i.y][i.x].y = i.y;
-			instance->source[i.y][i.x].x = i.x;
-			instance->source[i.y][i.x].z = ft_atoi(tab[i.x]);
-			if (color[1])
-				instance->source[i.y][i.x].c = ft_atohex(color[1]);
-			clear(color);
+			set_t_point_values(&instance->source[i.y][i.x], i.x, i.y, tab[i.x]);
 			i.x++;
 		}
 		clear(tab);
@@ -52,10 +59,7 @@ void	free_t_points(t_point **grid, int height)
 
 	y = 0;
 	while (y < height)
-	{
-		free(grid[y]);
-		y++;
-	}
+		free(grid[y++]);
 	free(grid);
 }
 

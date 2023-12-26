@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 17:16:30 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 18:53:18 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,8 @@ typedef struct s_session
 int		ft_atoi(char *str);
 int		ft_atohex(const char *str);
 int		tab_size(char **array);
-size_t	ft_strlen(const char *s);
-size_t	ft_strlcpy(char *dest, const char *src, size_t size);
+void	ft_strlcpy(char *dest, const char *src, size_t size);
+
 //split methods
 void	*clear(char **array);
 char	**ft_split(const char *str, char c);
@@ -118,5 +118,6 @@ void	transform_map(t_session *instance, t_point *start, t_point *end);
 //color
 int		get_color(float ratio, int col_start, int col_end);
 void	init_color(t_bresenham param, t_color *color, t_point *start, t_point *end);
+void	clear_image(t_session *instance, int color);
 
 #endif

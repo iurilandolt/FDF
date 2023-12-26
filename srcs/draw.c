@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 17:15:12 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 18:33:02 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,62 +62,55 @@ void	draw_line(t_session *instance, t_point *start, t_point *end)
 	}
 }
 
-// why have t point variables here? just for readability?
 static void	draw_horizontal_lines(t_session *instance, int x, int y)
 {
-	t_point	a;
-	t_point	b;
+	t_point	start;
+	t_point	end;
 
-	a.x = x;
-	a.y = y;
-	a.z = instance->source[y][x].z;
-	a.c = instance->source[y][x].c;
-	b.x = x + 1;
-	b.y = y;
-	b.z = instance->source[y][x + 1].z;
-	b.c = instance->source[y][x + 1].c;
-	draw_line(instance, &a, &b);
+	start.x = x;
+	start.y = y;
+	start.z = instance->source[y][x].z;
+	start.c = instance->source[y][x].c;
+	end.x = x + 1;
+	end.y = y;
+	end.z = instance->source[y][x + 1].z;
+	end.c = instance->source[y][x + 1].c;
+	draw_line(instance, &start, &end);
 }
-// arent a and b just start and end?
+
 static void	draw_vertical_lines(t_session *instance, int x, int y)
 {
-	t_point	a;
-	t_point	b;
+	t_point	start;
+	t_point	end;
 
-	a.x = x;
-	a.y = y;
-	a.z = instance->source[y][x].z;
-	a.c = instance->source[y][x].c;
-	b.x = x;
-	b.y = y + 1;
-	b.z = instance->source[y + 1][x].z;
-	b.c = instance->source[y + 1][x].c;
-	draw_line(instance, &a, &b);
+	start.x = x;
+	start.y = y;
+	start.z = instance->source[y][x].z;
+	start.c = instance->source[y][x].c;
+	end.x = x;
+	end.y = y + 1;
+	end.z = instance->source[y + 1][x].z;
+	end.c = instance->source[y + 1][x].c;
+	draw_line(instance, &start, &end);
 }
 
-//change to vector2
 void	draw_map(t_session *instance)
 {
-	int	x;
-	int	y;
+	t_vector2 i;
 
-	y = 0;
+	i.y = 0;
 
-	while (y < instance->height)
+	while (i.y < instance->height)
 	{
-		x = 0;
-		while (x < instance->width)
+		i.x = 0;
+		while (i.x < instance->width)
 		{
-			if (x < instance->width - 1)
-			{
-				draw_horizontal_lines(instance, x, y);
-			}
-			if (y < instance->height - 1)
-			{
-				draw_vertical_lines(instance, x, y);
-			}
-			x++;
+			if (i.x < instance->width - 1)
+				draw_horizontal_lines(instance, i.x, i.y);
+			if (i.y < instance->height - 1)
+				draw_vertical_lines(instance, i.x, i.y);
+			i.x++;
 		}
-		y++;
+		i.y++;
 	}
 }
