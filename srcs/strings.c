@@ -6,27 +6,11 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:03:02 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/20 20:46:36 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 13:52:55 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
-
-int	fdf_strlen(char *str)
-{
-	int	i;
-	int	counter;
-
-	i = 0;
-	counter = 0;
-	while (str[i])
-	{
-		if (str[i] != '-' || ' ')
-			++counter;
-		++i;
-	}
-	return(counter);
-}
 
 size_t	ft_strlen(const char *s)
 {

@@ -6,38 +6,56 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:02:48 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/23 21:17:45 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 14:03:08 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../include/gnl.h"
 
-//use vector 2 for iterator ...
+
 int	check_fext(char *path, char const *ext)
 {
-	int	i;
-	int j;
+	t_vector2 i;
 
-	i = 0;
-	if (!path[i])
+	i.x = 0;
+	if (!path[i.x])
 		return 0;
-	while(path[i++])
+	while(path[i.x++])
 	{
-		j = 0;
-		while (path[i] && path[i] != '.')
-			i++;
-		while(path[i] && path[i] == ext[j++])
+		i.y = 0;
+		while (path[i.x] && path[i.x] != '.')
+			i.x++;
+		while(path[i.x] && path[i.x] == ext[i.y++])
 		{
-			i++;
-			if (!ext[j])
+			i.x++;
+			if (!ext[i.y])
 				return (1);
 		}
 	}
 	return (0);
 }
 
-// we could count line cell amount using spaces instead of counting tokens
+//problem ...  if a line has one less element but a ' ' at the end, it will be accepted
+int	check_width(char *str)
+{
+	t_vector2 colums;
+
+	colums.x = 0;
+	colums.y = 0;
+	while (str[colums.x])
+	{
+		while(str[colums.x] == 32)
+			colums.x++;
+		if (str[colums.x] && str[colums.x++] != 32)
+			colums.y++;
+
+		while(str[colums.x] && str[colums.x] != 32)
+			colums.x++;
+	}
+	return (colums.y);
+}
+
 int	check_fformat(t_session *instance, int filein)
 {
 	int		len;
@@ -48,11 +66,11 @@ int	check_fformat(t_session *instance, int filein)
 	if ((line = get_next_line(filein)))
 	{
 		++lines;
-		len = fdf_strlen(line);
+		len = check_width(line);
 		free(line);
 		while ((line = get_next_line(filein)))
 		{
-			if (fdf_strlen(line) != len)
+			if (check_width(line) != len)
 			{
 				free(line);
 				return (-1);

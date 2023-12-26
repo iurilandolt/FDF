@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:06:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/24 17:50:24 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 14:01:58 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,14 @@ void orthographic(t_point *point)
 void	scale_isometric(t_session *instance, t_point *start, t_point *end)
 {
 	float	map_diagonal;
+	float	factor;
 
 	map_diagonal = sqrt(instance->width * instance->width + instance->height * instance->height);
-	instance->factor = 0.85 * W_HEIGHT / map_diagonal;
-	start->x = round(start->x * instance->factor);
-	start->y = round(start->y * instance->factor);
-	end->x = round(end->x * instance->factor);
-	end->y = round(end->y * instance->factor);
+	factor = instance->factor * W_HEIGHT / map_diagonal;
+	start->x = round(start->x * factor);
+	start->y = round(start->y * factor);
+	end->x = round(end->x * factor);
+	end->y = round(end->y * factor);
 }
 
 /*implement scaling/aka zooming

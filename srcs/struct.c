@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 17:53:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/25 01:05:43 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 13:51:07 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../include/gnl.h"
 #include "../.minilibx/mlx.h"
 
-void	gen_t_points(t_session *instance, int filein)
+void	build_t_point_grid(t_session *instance, int filein)
 {
 	char		*line;
 	char		**tab;
@@ -41,8 +41,6 @@ void	gen_t_points(t_session *instance, int filein)
 		i.y++;
 	}
 	close(filein);
-	printf("Source\n");
-	print_t_points_info(instance->source, instance->height, instance->width);
 }
 
 void	free_t_points(t_point **grid, int height)

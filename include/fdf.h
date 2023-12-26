@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/24 14:47:05 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 13:53:02 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ typedef struct s_session
 #define W_HEIGHT 1080
 
 // string methods
-int		fdf_strlen(char *str); // change to count words
 int		ft_atoi(char *str);
 int		tab_size(char **array);
 size_t	ft_strlen(const char *s);
@@ -88,7 +87,7 @@ void	*clear(char **array);
 char	**ft_split(const char *str, char c);
 
 //t_point methods
-void	gen_t_points(t_session *instance, int filein);
+void	build_t_point_grid(t_session *instance, int filein);
 void	print_t_points(t_point **grid, int height, int width);
 void	free_t_points(t_point **grid, int height);
 void print_t_points_info(t_point **grid, int height, int width);
@@ -105,8 +104,7 @@ void	draw_map(t_session *instance);
 
 //transform methods
 void	transform_map(t_session *instance, t_point *start, t_point *end);
-void	scale_map(t_session *instance, t_point *start, t_point *end);
-void	center_isometric(t_point *start, t_point *end);
+
 //color
 int	get_color(float ratio, int col_start, int col_end);
 int	interpolate(int start, int end, float ratio);
