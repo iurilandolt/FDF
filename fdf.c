@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/24 18:11:20 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/25 01:05:12 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include ".minilibx/mlx.h"
 #include ".minilibx/mlx_int.h"
 
+// mlx_shutdown().
 void	destroy_mlx(t_session *instance)
 {
 	if (instance->mlx_img.img)
@@ -69,12 +70,13 @@ int	main(int argc, char **argv)
 		if (filein > 2)
 		{
 			gen_t_points(instance, filein);
-
+			// function to manage mlx startup
 			instance->mlx_ser = mlx_init();
 			instance->mlx_win = mlx_new_window(instance->mlx_ser, W_WIDTH,W_HEIGHT, "fml");
 			instance->mlx_img.img = mlx_new_image(instance->mlx_ser, W_WIDTH, W_HEIGHT);
 			instance->mlx_img.addr = mlx_get_data_addr(instance->mlx_img.img, &instance->mlx_img.bits_per_pixel,
 													&instance->mlx_img.line_length, &instance->mlx_img.endian);
+			// (if there !win !image ! data return? free t_points and instance and...)
 			draw_map(instance);
 			mlx_put_image_to_window(instance->mlx_ser, instance->mlx_win, instance->mlx_img.img, 0, 0);
 			mlx_hook(instance->mlx_win, DestroyNotify, StructureNotifyMask, window_closed, instance);

@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 17:53:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/24 16:54:24 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/25 01:05:43 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,22 @@ void	gen_t_points(t_session *instance, int filein)
 	print_t_points_info(instance->source, instance->height, instance->width);
 }
 
+void	free_t_points(t_point **grid, int height)
+{
+	int	y;
+
+	y = 0;
+	while (y < height)
+	{
+
+		free(grid[y]);
+		y++;
+	}
+	free(grid);
+}
+
+
+//debug functions, remove before submitting
 void	print_t_points(t_point **grid, int height, int width)
 {
 	int y, x;
@@ -79,19 +95,4 @@ void print_t_points_info(t_point **grid, int height, int width) {
         printf("----------------------------------------\n");
     }
     printf("\n");
-}
-
-
-void	free_t_points(t_point **grid, int height)
-{
-	int	y;
-
-	y = 0;
-	while (y < height)
-	{
-
-		free(grid[y]);
-		y++;
-	}
-	free(grid);
 }
