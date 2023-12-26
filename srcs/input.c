@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:02:48 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 14:03:08 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 15:13:26 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	check_fext(char *path, char const *ext)
 	return (0);
 }
 
-//problem ...  if a line has one less element but a ' ' at the end, it will be accepted
 int	check_width(char *str)
 {
 	t_vector2 colums;
@@ -47,9 +46,11 @@ int	check_width(char *str)
 	{
 		while(str[colums.x] == 32)
 			colums.x++;
-		if (str[colums.x] && str[colums.x++] != 32)
+		if (str[colums.x] && str[colums.x] != 32)
+		{
+			colums.x++;
 			colums.y++;
-
+		}
 		while(str[colums.x] && str[colums.x] != 32)
 			colums.x++;
 	}
@@ -70,30 +71,42 @@ int	check_fformat(t_session *instance, int filein)
 		free(line);
 		while ((line = get_next_line(filein)))
 		{
-			if (check_width(line) != len)
+			if (check_width(line) == len)
 			{
 				free(line);
-				return (-1);
+				++lines;
 			}
-			free(line);
-			++lines;
+			else
+			{
+				free(line);
+				break;
+			}
 		}
 	}
 	instance->height = lines;
 	instance->width = 0;
 	return(lines);
 }
-
+//set errno = 0, use perror to printf error message?
 int	open_file(t_session *instance, char *argv)
 {
 	int filein;
 
 	if ((filein = open(argv, O_RDONLY)) <= 0)
+	{
+		printf("Error\nCould not open file %s\n", argv);
 		return (-1);
+	}
 	if (!check_fext(argv, ".fdf"))
+	{
+		printf("Error\nFile %s is not a .fdf file\n", argv);
 		return (-1);
+	}
 	if (check_fformat(instance, filein) < 3)
+	{
+		printf("Error\nFile %s is not a valid .fdf file\n", argv);
 		return (-1);
+	}
 	close(filein);
 	filein = open(argv, O_RDONLY);
 	return (filein);

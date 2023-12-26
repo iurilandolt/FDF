@@ -6,27 +6,12 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/24 14:29:01 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 15:22:21 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../.minilibx/mlx.h"
-
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-	char	*dst; // pixel address
-
-	if (x < 0 || y < 0 || x > W_WIDTH || y > W_HEIGHT)
-		return ;
-	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-	*(unsigned int *)dst = color;
-}
-
-int get_color_based_on_z(int z)
-{
-	return (z > 0) ? 0xFF0000 : 0x0000FF;
-}
 
 static void	bresenham_define(t_bresenham *param, t_point *start, t_point *end)
 {

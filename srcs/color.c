@@ -6,12 +6,27 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 13:48:01 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/23 16:19:54 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 15:22:31 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../.minilibx/mlx.h"
+
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst; // pixel address
+
+	if (x < 0 || y < 0 || x > W_WIDTH || y > W_HEIGHT)
+		return ;
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
+}
+
+int get_color_based_on_z(int z)
+{
+	return (z > 0) ? 0xFF0000 : 0x0000FF;
+}
 
 int	get_color(float ratio, int col_start, int col_end)
 {

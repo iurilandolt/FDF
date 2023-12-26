@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 17:53:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 13:51:07 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 15:20:36 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	build_t_point_grid(t_session *instance, int filein)
 {
 	char		*line;
 	char		**tab;
+	char		**color;
 	t_vector2	i;
 
 	i.y = 0;
@@ -30,10 +31,15 @@ void	build_t_point_grid(t_session *instance, int filein)
 		instance->source[i.y] =  (t_point *)malloc(sizeof(t_point) * instance->width);
 		while (tab[i.x] && i.x < instance->width)
 		{
+			color = ft_split(tab[i.x], ',');
 			instance->source[i.y][i.x].y = i.y;
 			instance->source[i.y][i.x].x = i.x;
 			instance->source[i.y][i.x].z = ft_atoi(tab[i.x]);
-			ft_strlcpy(instance->source[i.y][i.x].c, "0x000000", 8);
+			if (color[1])
+			{
+				ft_strlcpy(instance->source[i.y][i.x].c, color[1], 8);
+				clear(color);
+			}
 			i.x++;
 		}
 		clear(tab);
@@ -50,7 +56,6 @@ void	free_t_points(t_point **grid, int height)
 	y = 0;
 	while (y < height)
 	{
-
 		free(grid[y]);
 		y++;
 	}

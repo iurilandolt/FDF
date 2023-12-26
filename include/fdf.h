@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 13:53:02 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 15:22:50 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,5 +107,6 @@ void	transform_map(t_session *instance, t_point *start, t_point *end);
 
 //color
 int	get_color(float ratio, int col_start, int col_end);
+int get_color_based_on_z(int z);
 int	interpolate(int start, int end, float ratio);
 #endif
