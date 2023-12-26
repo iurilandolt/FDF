@@ -6,13 +6,13 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 17:53:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 18:20:24 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 22:52:22 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../include/gnl.h"
-#include "../.minilibx/mlx.h"
+
 
 void	set_t_point_values(t_point *point, int x, int y, char *tab)
 {

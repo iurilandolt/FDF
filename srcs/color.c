@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 13:48:01 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 18:53:11 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 23:07:07 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 {
-	char	*dst; // pixel address
+	char	*dst;
 
 	if (x < 0 || y < 0 || x > W_WIDTH || y > W_HEIGHT)
 		return ;
@@ -29,13 +29,13 @@ void	init_color(t_bresenham param, t_color *color, t_point *start, t_point *end)
 	if (start->c == 0)
 	{
 		if (start->z > 0)
-			color->c_start = 0xFF2000;
+			color->c_start = RED;
 		else
-			color->c_start = 0x2000FF;
+			color->c_start = BLUE;
 		if (end->z > 0)
-			color->c_end = 0xFF2000;
+			color->c_end = RED;
 		else
-			color->c_end = 0x2000FF;
+			color->c_end = BLUE;
 	}
 	else
 	{

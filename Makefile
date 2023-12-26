@@ -6,7 +6,7 @@
 #    By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/12/18 21:16:33 by rlandolt          #+#    #+#              #
-#    Updated: 2023/12/23 22:17:17 by rlandolt         ###   ########.fr        #
+#    Updated: 2023/12/26 22:55:09 by rlandolt         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -26,6 +26,7 @@ SRC = fdf.c \
 	$(SRC_PATH)/struct.c \
 	$(SRC_PATH)/color.c \
 	$(SRC_PATH)/transform.c \
+	$(SRC_PATH)/hooks.c \
 
 CC = cc -g
 CFLAGS = -Wall -Wextra -Werror

@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 19:09:16 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 22:56:58 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	mlx_update(t_session *instance)
 
 void	mlx_shutdown(t_session *instance)
 {
+	mlx_loop_end(instance->mlx_ser);
 	if (instance->mlx_img.img)
 		mlx_destroy_image(instance->mlx_ser, instance->mlx_img.img);
 	if (instance->mlx_win)
@@ -53,35 +54,6 @@ void	mlx_shutdown(t_session *instance)
 	exit(0);
 }
 
-
-//turn this function into the input handler for all keys // mlx_hook_loop
-int	esc_pressed(int keycode, t_session *instance)
-{
-	printf("keycode: %d\n", keycode);
-	if (keycode == 65307)
-		mlx_shutdown(instance);
-	if (keycode == 65362)
-	{
-		instance->factor += 0.05;
-		mlx_update(instance);
-	}
-	if (keycode == 65364)
-	{
-		instance->factor -= 0.05;
-		mlx_update(instance);
-	}
-	return (0);
-}
-
-//this will be the only function that intereacts with the window close button
-// lets called exit hook or something
-int window_closed(t_session *instance)
-{
-	printf("Window close event triggered.\n");
-	mlx_shutdown(instance);
-	return (0);
-}
-
 int	main(int argc, char **argv)
 {
 	int			filein;
@@ -96,15 +68,17 @@ int	main(int argc, char **argv)
 		if (filein > 2)
 		{
 			build_t_point_grid(instance, filein);
-
 			// function to inniate session variables
 			instance->factor = 0.85;
-			//instance->offset->x = W_WIDTH * 2 / 5;
-			//instance->offset->y = W_HEIGHT * 1 / 5;
+			instance->offset.x = W_WIDTH * 2 / 5;
+			instance->offset.y = W_HEIGHT * 1 / 5;
+
 			mlx_startup(instance);
 
-			mlx_hook(instance->mlx_win, DestroyNotify, StructureNotifyMask, window_closed, instance);
-			mlx_hook(instance->mlx_win, 2, 1L<<0, esc_pressed, instance);
+			mlx_key_hook(instance->mlx_win, handle_key, instance);
+			mlx_hook(instance->mlx_win, DestroyNotify, StructureNotifyMask, exit_hook, instance);
+
+
 			mlx_loop(instance->mlx_ser);
 		}
 	}
