@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:06:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 14:01:58 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 19:01:39 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,7 @@ void	scale_isometric(t_session *instance, t_point *start, t_point *end)
 	end->y = round(end->y * factor);
 }
 
-/*implement scaling/aka zooming
-typedef struct s_session {
-    // ... existing members ...
-    float zoom_factor;
-} t_session;
-
-void scale_zoom(t_session *instance, t_point *start, t_point *end) {
-    start->x = round(start->x * instance->zoom_factor);
-    start->y = round(start->y * instance->zoom_factor);
-    end->x = round(end->x * instance->zoom_factor);
-    end->y = round(end->y * instance->zoom_factor);
-}
-
-*/
-
-//offset might be read/set from/to session struct
+//offset might be read/set from/to session struct like scale factor
 void	center_isometric(t_point *start, t_point *end)
 {
 	t_vector2	offset;
@@ -74,14 +59,6 @@ void	center_isometric(t_point *start, t_point *end)
 	start->y += offset.y;
 	end->x += offset.x;
 	end->y += offset.y;
-}
-
-void	transform_map(t_session *instance, t_point *start, t_point *end)
-{
-	scale_isometric(instance, start, end);
-	isometric(start);
-	isometric(end);
-	center_isometric(start, end);
 }
 
 /*implement x/y shifting
@@ -98,6 +75,14 @@ void center_isometric(t_session *instance, t_point *start, t_point *end) {
     end->x += instance->offset_x;
     end->y += instance->offset_y;
 }
-
-
 */
+
+void	transform_map(t_session *instance, t_point *start, t_point *end)
+{
+	scale_isometric(instance, start, end);
+	isometric(start);
+	isometric(end);
+	center_isometric(start, end);
+}
+
+

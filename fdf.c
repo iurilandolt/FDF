@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 18:56:38 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 19:09:16 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,11 @@ int	esc_pressed(int keycode, t_session *instance)
 		instance->factor += 0.05;
 		mlx_update(instance);
 	}
+	if (keycode == 65364)
+	{
+		instance->factor -= 0.05;
+		mlx_update(instance);
+	}
 	return (0);
 }
 
@@ -76,8 +81,6 @@ int window_closed(t_session *instance)
 	mlx_shutdown(instance);
 	return (0);
 }
-
-
 
 int	main(int argc, char **argv)
 {
@@ -96,8 +99,8 @@ int	main(int argc, char **argv)
 
 			// function to inniate session variables
 			instance->factor = 0.85;
-			// shift y = someting;
-			// shift x = something;
+			//instance->offset->x = W_WIDTH * 2 / 5;
+			//instance->offset->y = W_HEIGHT * 1 / 5;
 			mlx_startup(instance);
 
 			mlx_hook(instance->mlx_win, DestroyNotify, StructureNotifyMask, window_closed, instance);
