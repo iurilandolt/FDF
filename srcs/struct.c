@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 17:53:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 15:20:36 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 17:12:22 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,17 +36,14 @@ void	build_t_point_grid(t_session *instance, int filein)
 			instance->source[i.y][i.x].x = i.x;
 			instance->source[i.y][i.x].z = ft_atoi(tab[i.x]);
 			if (color[1])
-			{
-				ft_strlcpy(instance->source[i.y][i.x].c, color[1], 8);
-				clear(color);
-			}
+				instance->source[i.y][i.x].c = ft_atohex(color[1]);
+			clear(color);
 			i.x++;
 		}
 		clear(tab);
 		free(line);
 		i.y++;
 	}
-	close(filein);
 }
 
 void	free_t_points(t_point **grid, int height)

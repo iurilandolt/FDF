@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 13:48:01 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 15:22:31 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 17:17:10 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,27 @@ int get_color_based_on_z(int z)
 	return (z > 0) ? 0xFF0000 : 0x0000FF;
 }
 
+void	init_color(t_bresenham param, t_color *color, t_point *start, t_point *end)
+{
+	color->max = fmax(fabs((float)param.dx), fabs((float)param.dy));
+	if (start->c == 0)
+	{
+		color->c_start = get_color_based_on_z(start->z);
+		color->c_end = get_color_based_on_z(end->z);
+	}
+	else
+	{
+		color->c_start = start->c;
+		color->c_end = end->c;
+	}
+	color->i = 0;
+}
+
+int	interpolate(int start, int end, float ratio)
+{
+	return ((int)(start + ((end - start) * ratio)));
+}
+
 int	get_color(float ratio, int col_start, int col_end)
 {
 	int	r;
@@ -40,7 +61,4 @@ int	get_color(float ratio, int col_start, int col_end)
 	return ((r << 16) | (g << 8) | b);
 }
 
-int	interpolate(int start, int end, float ratio)
-{
-	return ((int)(start + ((end - start) * ratio)));
-}
+

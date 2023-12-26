@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 15:22:50 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 17:16:30 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ typedef struct s_point
 	int		x;
 	int		y;
 	int		z;
-	char	c[12];
+	int		c;
 }	t_point;
 
 typedef struct	s_data {
@@ -63,6 +63,15 @@ typedef struct s_bresenham
 	int	err;
 }		t_bresenham;
 
+typedef struct s_color
+{
+	int max;
+	int c_start;
+	int c_end;
+	int i;
+	float  c_ratio;
+} t_color;
+
 typedef struct s_session
 {
 	t_point	**source;
@@ -79,6 +88,7 @@ typedef struct s_session
 
 // string methods
 int		ft_atoi(char *str);
+int		ft_atohex(const char *str);
 int		tab_size(char **array);
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
@@ -106,7 +116,7 @@ void	draw_map(t_session *instance);
 void	transform_map(t_session *instance, t_point *start, t_point *end);
 
 //color
-int	get_color(float ratio, int col_start, int col_end);
-int get_color_based_on_z(int z);
-int	interpolate(int start, int end, float ratio);
+int		get_color(float ratio, int col_start, int col_end);
+void	init_color(t_bresenham param, t_color *color, t_point *start, t_point *end);
+
 #endif
