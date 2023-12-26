@@ -19,7 +19,8 @@ https://github.com/mbdanielcrespo/ft_fdf
 https://github.com/thebrisly/42-Cursus-Piscine/tree/master/FdF
 https://github.com/Laendrun/42-fdf
 https://github.com/duarte3333/FdF_Wireframe_model
-
+https://youtu.be/eoXn6nwV694?si=PWu8RD06YRaXronk
+https://www.youtube.com/watch?v=go1qrWFw_bs&ab_channel=CodingMath
 
  * @code
  * int interpolate(int start, int end, float ratio);

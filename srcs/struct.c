@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 17:53:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/23 15:17:58 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/25 01:05:43 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,14 +40,32 @@ void	gen_t_points(t_session *instance, int filein)
 		free(line);
 		i.y++;
 	}
+	close(filein);
 	printf("Source\n");
 	print_t_points_info(instance->source, instance->height, instance->width);
 }
 
+void	free_t_points(t_point **grid, int height)
+{
+	int	y;
+
+	y = 0;
+	while (y < height)
+	{
+
+		free(grid[y]);
+		y++;
+	}
+	free(grid);
+}
+
+
+//debug functions, remove before submitting
 void	print_t_points(t_point **grid, int height, int width)
 {
 	int y, x;
-
+	if (!grid || !*grid)
+		return ;
 	y = 0;
 	while (y < height)
 	{
@@ -55,7 +73,6 @@ void	print_t_points(t_point **grid, int height, int width)
 		while (x < width)
 		{
 			printf("%-3d ", grid[y][x].z);
-			//printf(" : %s", grid[y][x].c);
 			x++;
 		}
 		printf("\n");
@@ -72,26 +89,10 @@ void print_t_points_info(t_point **grid, int height, int width) {
     for (int y = 0; y < height; y++) {
         for (int x = 0; x < width; x++) {
             printf("| (%3d, %3d, %3d) ", grid[y][x].x, grid[y][x].y, grid[y][x].z);
-            // Uncomment to include color information
             // printf("| Color: %s ", grid[y][x].c);
         }
         printf("|\n");
         printf("----------------------------------------\n");
     }
     printf("\n");
-}
-
-
-void	free_t_points(t_point **grid, int height)
-{
-	int	y;
-
-	y = 0;
-	while (y < height)
-	{
-
-		free(grid[y]);
-		y++;
-	}
-	free(grid);
 }

@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/23 15:16:40 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/24 14:47:05 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,14 @@ typedef struct s_vector2
 {
 	int	x;
 	int	y;
+
 }	t_vector2;
 
 typedef struct s_vector3
 {
-	float x;
-	float y;
-	float z;
+	float	x;
+	float	y;
+	float	z;
 }	t_vector3;
 
 typedef struct s_point
@@ -43,13 +44,6 @@ typedef struct s_point
 	char	c[12];
 }	t_point;
 
-typedef struct s_transform
-{
-	float	angle;
-	float	radian_angle;
-	float	z_scale;
-}	t_transform;
-
 typedef struct	s_data {
 	void	*img;
 	char	*addr;
@@ -58,13 +52,23 @@ typedef struct	s_data {
 	int		endian;
 }				t_data;
 
+typedef struct s_bresenham
+{
+	int	x0;
+	int	y0;
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int	err;
+}		t_bresenham;
+
 typedef struct s_session
 {
 	t_point	**source;
-	t_point	**projection;
 	int		height;
 	int		width;
-//	int		max_z;
+	float	factor;
 	void	*mlx_ser;
 	void	*mlx_win;
 	t_data	mlx_img;
@@ -72,12 +76,11 @@ typedef struct s_session
 
 #define W_WIDTH 1920
 #define W_HEIGHT 1080
-#define M_PI 3.14159265358979323846
 
 // string methods
-int		fdf_strlen(char *str);
+int		fdf_strlen(char *str); // change to count words
 int		ft_atoi(char *str);
-int	tab_size(char **array);
+int		tab_size(char **array);
 size_t	ft_strlen(const char *s);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 //split methods
@@ -97,7 +100,13 @@ int		open_file(t_session *instance, char *argv);
 
 //draw methods
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void	draw_points(t_data *img, t_point **src, int rows, int cols);
+void	draw_line(t_session *instance, t_point *start, t_point *end);
+void	draw_map(t_session *instance);
+
+//transform methods
+void	transform_map(t_session *instance, t_point *start, t_point *end);
+void	scale_map(t_session *instance, t_point *start, t_point *end);
+void	center_isometric(t_point *start, t_point *end);
 //color
 int	get_color(float ratio, int col_start, int col_end);
 int	interpolate(int start, int end, float ratio);

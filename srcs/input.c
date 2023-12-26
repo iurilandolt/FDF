@@ -6,13 +6,14 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:02:48 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/22 12:51:10 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/23 21:17:45 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../include/gnl.h"
 
+//use vector 2 for iterator ...
 int	check_fext(char *path, char const *ext)
 {
 	int	i;
