@@ -35,3 +35,42 @@ int	interpolate(int start, int end, float ratio)
 {
 	return ((int)(start + ((end - start) * ratio)));
 }
+
+
+
+//debug functions, remove before submitting
+void	print_t_points(t_point **grid, int height, int width)
+{
+	int y, x;
+	if (!grid || !*grid)
+		return ;
+	y = 0;
+	while (y < height)
+	{
+		x = 0;
+		while (x < width)
+		{
+			printf("%-3d ", grid[y][x].z);
+			x++;
+		}
+		printf("\n");
+		y++;
+	}
+	printf("\n");
+}
+
+
+void print_t_points_info(t_point **grid, int height, int width) {
+    printf("Grid Points (x, y, z):\n");
+    printf("----------------------------------------\n");
+
+    for (int y = 0; y < height; y++) {
+        for (int x = 0; x < width; x++) {
+            printf("| (%3d, %3d, %3d) ", grid[y][x].x, grid[y][x].y, grid[y][x].z);
+            // printf("| Color: %s ", grid[y][x].c);
+        }
+        printf("|\n");
+        printf("----------------------------------------\n");
+    }
+    printf("\n");
+}

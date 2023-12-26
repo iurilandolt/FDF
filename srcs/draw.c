@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 18:33:02 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 23:17:22 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 static void	bresenham_define(t_bresenham *param, t_point *start, t_point *end)
 {
-
 	param->dx = abs(end->x - start->x);
 	param->dy = -1 * abs(end->y - start->y);
 

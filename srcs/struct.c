@@ -6,13 +6,12 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 17:53:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 22:52:22 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/26 23:13:02 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../include/gnl.h"
-
 
 void	set_t_point_values(t_point *point, int x, int y, char *tab)
 {
@@ -61,42 +60,4 @@ void	free_t_points(t_point **grid, int height)
 	while (y < height)
 		free(grid[y++]);
 	free(grid);
-}
-
-
-//debug functions, remove before submitting
-void	print_t_points(t_point **grid, int height, int width)
-{
-	int y, x;
-	if (!grid || !*grid)
-		return ;
-	y = 0;
-	while (y < height)
-	{
-		x = 0;
-		while (x < width)
-		{
-			printf("%-3d ", grid[y][x].z);
-			x++;
-		}
-		printf("\n");
-		y++;
-	}
-	printf("\n");
-}
-
-
-void print_t_points_info(t_point **grid, int height, int width) {
-    printf("Grid Points (x, y, z):\n");
-    printf("----------------------------------------\n");
-
-    for (int y = 0; y < height; y++) {
-        for (int x = 0; x < width; x++) {
-            printf("| (%3d, %3d, %3d) ", grid[y][x].x, grid[y][x].y, grid[y][x].z);
-            // printf("| Color: %s ", grid[y][x].c);
-        }
-        printf("|\n");
-        printf("----------------------------------------\n");
-    }
-    printf("\n");
 }
