@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 21:00:33 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/18 21:23:15 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 22:20:18 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ t_list	*get_last(t_list *lst)
 
 int	has_newline(t_list *lst)
 {
-	int i;
+	int	i;
+
 	if (!lst)
 		return (0);
 	while (lst)
@@ -55,13 +56,13 @@ int	line_len(t_list *lst)
 		while (lst->buffer[i])
 		{
 			if (lst->buffer[i] == '\n')
-				return(len + 1);
+				return (len + 1);
 			i++;
 			len++;
 		}
 		lst = lst->next;
 	}
-	return(len);
+	return (len);
 }
 
 char	*get_line(t_list *lst)
@@ -106,5 +107,3 @@ void	append_string(t_list *lst, char *str)
 	}
 	str[j] = '\0';
 }
-
-

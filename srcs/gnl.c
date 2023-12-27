@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 15:58:18 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/22 17:52:25 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 22:16:26 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static void	append_list(t_list **lst, char *buffer)
 
 	last = get_last(*lst);
 	new = (t_list *)malloc(sizeof(t_list));
-	if(!new)
+	if (!new)
 		return ;
 	if (!last)
 		*lst = new;
@@ -57,11 +57,11 @@ static void	mantain_list(t_list **lst)
 {
 	t_list	*new;
 	t_list	*last;
-	int	i;
-	int	j;
-	char *buffer;
+	int		i;
+	int		j;
+	char	*buffer;
 
-	if(!lst)
+	if (!lst)
 		return ;
 	new = (t_list *)malloc(sizeof(t_list));
 	buffer = (char *)malloc(BUFFER_SIZE * sizeof(char) + 1);
@@ -82,8 +82,8 @@ static void	mantain_list(t_list **lst)
 
 static void	init_list(t_list **lst, int fd)
 {
-	int c_read;
-	char *buffer;
+	int		c_read;
+	char	*buffer;
 
 	while (!has_newline(*lst))
 	{
@@ -103,8 +103,8 @@ static void	init_list(t_list **lst, int fd)
 
 char	*get_next_line(int fd)
 {
-	static	t_list *lst;
-	char	*next_line;
+	static t_list	*lst;
+	char			*next_line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, &next_line, 0) < 0)
 		return (NULL);
@@ -115,4 +115,3 @@ char	*get_next_line(int fd)
 	mantain_list(&lst);
 	return (next_line);
 }
-

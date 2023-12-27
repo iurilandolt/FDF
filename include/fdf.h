@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 21:22:33 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 21:56:19 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 # define FDF_H
 
-#include <fcntl.h>
-#include <stdbool.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <errno.h>
+# include <fcntl.h>
+# include <stdbool.h>
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdio.h>
+# include <math.h>
+# include <errno.h>
 
 typedef struct s_vector2
 {
@@ -37,7 +37,7 @@ typedef struct s_point
 	int		c;
 }	t_point;
 
-typedef struct	s_data {
+typedef struct s_data {
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -45,7 +45,7 @@ typedef struct	s_data {
 	int		endian;
 }				t_data;
 
-typedef struct	s_dda
+typedef struct s_dda
 {
 	float	delta_x;
 	float	delta_y;
@@ -63,11 +63,11 @@ typedef struct s_color
 	int		c_end;
 	int		i;
 	float	c_ratio;
-} t_color;
+}	t_color;
 
 typedef struct s_session
 {
-	t_point	**source;
+	t_point		**source;
 	t_vector2	offset;
 	int			height;
 	int			width;
@@ -78,20 +78,20 @@ typedef struct s_session
 	t_data		mlx_img;
 }	t_session;
 
-#define W_WIDTH 1920
-#define W_HEIGHT 1080
+# define W_WIDTH 1920
+# define W_HEIGHT 1080
 
-#define RED 0xFF2000
-#define BLUE 0x2000FF
+# define RED 0xFF2000
+# define BLUE 0x2000FF
 
-#define ESC 65307
-#define UP 65362
-#define DOWN 65364
-#define LEFT 65361
-#define RIGHT 65363
-#define PLUS 45
-#define MINUS 61
-#define SWAP 112
+# define ESC 65307
+# define UP 65362
+# define DOWN 65364
+# define LEFT 65361
+# define RIGHT 65363
+# define PLUS 45
+# define MINUS 61
+# define SWAP 112
 
 /*	->PARSE<-	*/
 int		ft_atoi(char *str);

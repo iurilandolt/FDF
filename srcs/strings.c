@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:03:02 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 23:21:40 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 22:23:14 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,37 +36,41 @@ void	ft_strlcpy(char *dest, const char *src, size_t size)
 		*(dest + i) = '\0';
 }
 
-int ft_atoi(char *str)
+int	ft_atoi(char *str)
 {
-	int n;
-	int sign;
+	int	n;
+	int	sign;
 
 	n = 0;
 	sign = 1;
-	while(*str == 32)
+	while (*str == 32)
 		str++;
 	if (*str == '+' || *str == '-')
-		if(*str++ == '-')
+		if (*str++ == '-')
 			sign = -1;
-	while(*str >= '0' && *str <= '9')
+	while (*str >= '0' && *str <= '9')
 		n = n * 10 + (*str++ - '0');
 	return (n * sign);
 }
 
-int hextoint(char c) {
+int	hextoint(char c)
+{
 	if (c >= '0' && c <= '9')
-		return c - '0';
+		return (c - '0');
 	else if (c >= 'a' && c <= 'f')
-		return c - 'a' + 10;
+		return (c - 'a' + 10);
 	else if (c >= 'A' && c <= 'F')
-		return c - 'A' + 10;
-	return -1;
+		return (c - 'A' + 10);
+	return (-1);
 }
 
-int ft_atohex(const char *str) {
-	int result = 0;
-	int digit;
+int	ft_atohex(const char *str)
+{
+	int	result;
+	int	digit;
 
+	result = 0;
+	digit = 0;
 	while (*str == ' ' || *str == '\t')
 		str++;
 	if (*str == '0' && (*(str + 1) == 'x' || *(str + 1) == 'X'))
@@ -76,6 +80,5 @@ int ft_atohex(const char *str) {
 		result = result * 16 + digit;
 		str++;
 	}
-	return result;
+	return (result);
 }
-

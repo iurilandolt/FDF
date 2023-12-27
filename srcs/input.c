@@ -6,27 +6,26 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:02:48 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 21:12:03 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 22:19:26 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../include/gnl.h"
 
-
 int	check_fext(char *path, char const *ext)
 {
-	t_vector2 i;
+	t_vector2	i;
 
 	i.x = 0;
 	if (!path[i.x])
-		return 0;
-	while(path[i.x++])
+		return (0);
+	while (path[i.x++])
 	{
 		i.y = 0;
 		while (path[i.x] && path[i.x] != '.')
 			i.x++;
-		while(path[i.x] && path[i.x] == ext[i.y++])
+		while (path[i.x] && path[i.x] == ext[i.y++])
 		{
 			i.x++;
 			if (!ext[i.y])
@@ -38,20 +37,20 @@ int	check_fext(char *path, char const *ext)
 
 int	check_width(char *str)
 {
-	t_vector2 colums;
+	t_vector2	colums;
 
 	colums.x = 0;
 	colums.y = 0;
 	while (str[colums.x])
 	{
-		while(str[colums.x] == 32)
+		while (str[colums.x] == 32)
 			colums.x++;
 		if (str[colums.x] && str[colums.x] != 32)
 		{
 			colums.x++;
 			colums.y++;
 		}
-		while(str[colums.x] && str[colums.x] != 32)
+		while (str[colums.x] && str[colums.x] != 32)
 			colums.x++;
 	}
 	return (colums.y);
@@ -60,7 +59,7 @@ int	check_width(char *str)
 int	check_fformat(t_session *instance, int filein)
 {
 	t_vector2	i;
-	char	*line;
+	char		*line;
 
 	i.y = 0;
 	if ((line = get_next_line(filein)))
@@ -73,7 +72,7 @@ int	check_fformat(t_session *instance, int filein)
 			if (check_width(line) != i.x)
 			{
 				free(line);
-				break;
+				break ;
 			}
 			else
 				++i.y;
@@ -82,12 +81,12 @@ int	check_fformat(t_session *instance, int filein)
 	}
 	instance->height = i.y;
 	instance->width = 0;
-	return(i.y);
+	return (i.y);
 }
 
 int	open_file(t_session *instance, char *argv)
 {
-	int filein;
+	int	filein;
 
 	if ((filein = open(argv, O_RDONLY)) <= 0)
 	{

@@ -6,13 +6,12 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:06:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 21:29:49 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 22:13:02 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../.minilibx/mlx.h"
-
 
 void	convert_points(t_point *start, t_point *end)
 {
@@ -22,7 +21,6 @@ void	convert_points(t_point *start, t_point *end)
 	tmp.y = start->y;
 	start->x = (tmp.x - tmp.y) * cos(0.523599);
 	start->y = (tmp.x + tmp.y) * sin(0.523599) - start->z;
-
 	tmp.x = end->x;
 	tmp.y = end->y;
 	end->x = (tmp.x - tmp.y) * cos(0.523599);
@@ -34,7 +32,7 @@ void	scale_points(t_session *instance, t_point *start, t_point *end)
 	float	diagonal;
 	float	factor;
 
-	diagonal = sqrt(instance->width * instance->width + instance->height * instance->height);
+	diagonal = hypot(instance->width, instance->height);
 	factor = instance->factor * W_HEIGHT / diagonal;
 	start->x = round(start->x * factor);
 	start->y = round(start->y * factor);
@@ -61,4 +59,3 @@ void	transform_points(t_session *instance, t_point *start, t_point *end)
 		convert_points(start, end);
 	center_points(instance, start, end);
 }
-

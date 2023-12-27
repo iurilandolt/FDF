@@ -6,19 +6,19 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 22:53:09 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 13:24:07 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 22:26:29 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 
-int exit_hook(t_session *instance)
+int	exit_hook(t_session *instance)
 {
 	mlx_shutdown(instance);
 	return (0);
 }
 
-void swap_projection(t_session *instance)
+void	swap_projection(t_session *instance)
 {
 	if (instance->iso)
 		instance->iso = false;
