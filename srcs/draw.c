@@ -6,102 +6,68 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 13:34:49 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 15:42:09 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../.minilibx/mlx.h"
 
-typedef struct s_bresenham2
+void init_dda(t_dda *params, t_point *start, t_point *end)
 {
-	int	x0;
-	int	y0;
-	int	dx;
-	int	dy;
-	int	sx;
-	int	sy;
-	int	err;
-}		t_bresenham2;
-
-static void	bresenham_define(t_bresenham *param, t_point *start, t_point *end)
-{
-	param->dx = abs(end->x - start->x);
-	param->dy = -1 * abs(end->y - start->y);
-
-	if (start->x <= end->x)
-		param->sx = 1;
-	else
-		param->sx = -1;
-	if (start->y <= end->y)
-		param->sy = 1;
-	else
-		param->sy = -1;
-
-	param->err = param->dx + param->dy;
-	param->x0 = start->x;
-	param->y0 = start->y;
+	params->current_x = start->x;
+	params->current_y = start->y;
+	params->delta_x = end->x - start->x;
+	params->delta_y = end->y - start->y;
+	params->step = fmax(fabs(params->delta_x), fabs(params->delta_y));
+	params->x_inc = params->delta_x / params->step;
+	params->y_inc = params->delta_y / params->step;
 }
 
-void	draw_line(t_session *instance, t_point *start, t_point *end)
+void put_pixels(t_session *instance, t_point *start, t_point *end)
 {
-	t_bresenham	param;
-	t_color 	color;
+	t_dda params;
+	t_color color;
 
-	transform_points(instance, start, end);
-	bresenham_define(&param, start, end);
-	init_color(param, &color, start, end);
-	while (1)
+	init_dda(&params, start, end);
+	init_color(params, &color, start, end);
+	while (color.i <= params.step)
 	{
 		color.c_ratio = (float)color.i / color.max;
+		my_mlx_pixel_put(&instance->mlx_img, round(params.current_x), round(params.current_y),
+				get_color(color.c_ratio, color.c_start, color.c_end));
+		params.current_x += params.x_inc;
+		params.current_y += params.y_inc;
 		color.i++;
-		if (param.x0 < W_WIDTH && param.x0 > 0 && param.y0 < W_HEIGHT && param.y0 > 0)
-			my_mlx_pixel_put(&instance->mlx_img, param.x0, param.y0, get_color(color.c_ratio, color.c_start, color.c_end));
-		if (param.x0 == end->x && param.y0 == end->y)
-			break ;
-		if (2 * param.err >= param.dy && param.x0 != end->x)
-		{
-			param.err += param.dy;
-			param.x0 += param.sx;
-		}
-		if (2 * param.err <= param.dx && param.y0 != end->y)
-		{
-			param.err += param.dx;
-			param.y0 += param.sy;
-		}
 	}
 }
 
-static void	draw_horizontal_lines(t_session *instance, int x, int y)
+void draw_lines(t_session *instance, int x, int y, int orientation)
 {
-	t_point	start;
-	t_point	end;
+	t_point start;
+	t_point end;
 
 	start.x = x;
 	start.y = y;
 	start.z = instance->source[y][x].z;
 	start.c = instance->source[y][x].c;
-	end.x = x + 1;
-	end.y = y;
-	end.z = instance->source[y][x + 1].z;
-	end.c = instance->source[y][x + 1].c;
-	draw_line(instance, &start, &end);
-}
 
-static void	draw_vertical_lines(t_session *instance, int x, int y)
-{
-	t_point	start;
-	t_point	end;
-
-	start.x = x;
-	start.y = y;
-	start.z = instance->source[y][x].z;
-	start.c = instance->source[y][x].c;
-	end.x = x;
-	end.y = y + 1;
-	end.z = instance->source[y + 1][x].z;
-	end.c = instance->source[y + 1][x].c;
-	draw_line(instance, &start, &end);
+	if (orientation == 0)
+	{
+		end.x = x + 1;
+		end.y = y;
+		end.z = instance->source[y][x + 1].z;
+		end.c = instance->source[y][x + 1].c;
+	}
+	else
+	{
+		end.x = x;
+		end.y = y + 1;
+		end.z = instance->source[y + 1][x].z;
+		end.c = instance->source[y + 1][x].c;
+	}
+	transform_points(instance, &start, &end);
+	put_pixels(instance, &start, &end);
 }
 
 void	draw_map(t_session *instance)
@@ -115,9 +81,9 @@ void	draw_map(t_session *instance)
 		while (i.x < instance->width)
 		{
 			if (i.x < instance->width - 1)
-				draw_horizontal_lines(instance, i.x, i.y);
+				draw_lines(instance, i.x, i.y, 0);
 			if (i.y < instance->height - 1)
-				draw_vertical_lines(instance, i.x, i.y);
+				draw_lines(instance, i.x, i.y, 1);
 			i.x++;
 		}
 		i.y++;

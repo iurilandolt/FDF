@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 13:48:01 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 23:07:07 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 14:46:04 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	init_color(t_bresenham param, t_color *color, t_point *start, t_point *end)
+void	init_color(t_dda param, t_color *color, t_point *start, t_point *end)
 {
-	color->max = fmax(fabs((float)param.dx), fabs((float)param.dy));
+	color->max = fmax(fabs((float)param.delta_x), fabs((float)param.delta_y));
 	if (start->c == 0)
 	{
 		if (start->z > 0)

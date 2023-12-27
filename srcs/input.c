@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:02:48 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 15:13:26 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 15:54:49 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,52 +59,53 @@ int	check_width(char *str)
 
 int	check_fformat(t_session *instance, int filein)
 {
-	int		len;
-	int		lines;
+	t_vector2	i;
 	char	*line;
 
-	lines = 0;
+	i.y = 0;
 	if ((line = get_next_line(filein)))
 	{
-		++lines;
-		len = check_width(line);
+		++i.y;
+		i.x = check_width(line);
 		free(line);
 		while ((line = get_next_line(filein)))
 		{
-			if (check_width(line) == len)
-			{
-				free(line);
-				++lines;
-			}
-			else
+			if (check_width(line) != i.x)
 			{
 				free(line);
 				break;
 			}
+			else
+				++i.y;
+			free(line);
 		}
 	}
-	instance->height = lines;
+	instance->height = i.y;
 	instance->width = 0;
-	return(lines);
+	return(i.y);
 }
-//set errno = 0, use perror to printf error message?
+
 int	open_file(t_session *instance, char *argv)
 {
 	int filein;
 
 	if ((filein = open(argv, O_RDONLY)) <= 0)
 	{
-		printf("Error\nCould not open file %s\n", argv);
+		perror("42/FDF -> Error\nCould not open file\n");
 		return (-1);
 	}
 	if (!check_fext(argv, ".fdf"))
 	{
-		printf("Error\nFile %s is not a .fdf file\n", argv);
+		errno = 1;
+		perror("42/FDF -> Error\nFile is not a .fdf file\n");
+
 		return (-1);
 	}
 	if (check_fformat(instance, filein) < 3)
 	{
-		printf("Error\nFile %s is not a valid .fdf file\n", argv);
+		errno = 1;
+		perror("42/FDF -> Error\nNot a valid .fdf file\n");
+
 		return (-1);
 	}
 	close(filein);
