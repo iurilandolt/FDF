@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 15:32:26 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 21:22:33 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,45 +93,30 @@ typedef struct s_session
 #define MINUS 61
 #define SWAP 112
 
-// string methods
+/*	->PARSE<-	*/
 int		ft_atoi(char *str);
 int		ft_atohex(const char *str);
 int		tab_size(char **array);
 void	ft_strlcpy(char *dest, const char *src, size_t size);
-
-//split methods
 void	*clear(char **array);
 char	**ft_split(const char *str, char c);
-
-//t_point methods
+/*	->STRCUT<-	*/
 void	build_t_point_grid(t_session *instance, int filein);
-void	print_t_points(t_point **grid, int height, int width);
 void	free_t_points(t_point **grid, int height);
-void print_t_points_info(t_point **grid, int height, int width);
-
-//input check and file open
-int		check_fext(char *path, char const *ext);
-int		check_fformat(t_session *instance, int filein);
+/*	->INSTANCE<-	*/
 int		open_file(t_session *instance, char *argv);
-
-//draw methods
+void	mlx_shutdown(t_session *instance);
+void	mlx_update(t_session *instance);
+int		exit_hook(t_session *instance);
+int		handle_key(int keycode, t_session *instance);
+/*	->GRAPHICS<	*/
+void	transform_points(t_session *instance, t_point *start, t_point *end);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	put_pixels(t_session *instance, t_point *start, t_point *end);
 void	draw_map(t_session *instance);
-
-//transform methods
-void	transform_points(t_session *instance, t_point *start, t_point *end);
-
-//color methods
-int		get_color(float ratio, int col_start, int col_end);
+/*	->COLOR<-	*/
 void	init_color(t_dda param, t_color *color, t_point *start, t_point *end);
 void	clear_image(t_session *instance, int color);
+int		get_color(float ratio, int col_start, int col_end);
 
-//hook methods
-int exit_hook(t_session *instance);
-int	handle_key(int keycode, t_session *instance);
-
-//mlx methods
-void	mlx_shutdown(t_session *instance);
-void	mlx_update(t_session *instance);
 #endif

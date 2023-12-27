@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:02:48 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 15:54:49 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 21:12:03 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,12 @@ int	open_file(t_session *instance, char *argv)
 	{
 		errno = 1;
 		perror("42/FDF -> Error\nFile is not a .fdf file\n");
-
 		return (-1);
 	}
 	if (check_fformat(instance, filein) < 3)
 	{
 		errno = 1;
 		perror("42/FDF -> Error\nNot a valid .fdf file\n");
-
 		return (-1);
 	}
 	close(filein);

@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 13:48:01 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 14:46:04 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 21:45:50 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 
 void	init_color(t_dda param, t_color *color, t_point *start, t_point *end)
 {
+	color->i = 0;
 	color->max = fmax(fabs((float)param.delta_x), fabs((float)param.delta_y));
 	if (start->c == 0)
 	{
@@ -42,7 +43,6 @@ void	init_color(t_dda param, t_color *color, t_point *start, t_point *end)
 		color->c_start = start->c;
 		color->c_end = end->c;
 	}
-	color->i = 0;
 }
 
 int	interpolate(int start, int end, float ratio)

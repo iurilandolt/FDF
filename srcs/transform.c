@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:06:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 13:25:33 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 21:29:49 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,11 @@ void	convert_points(t_point *start, t_point *end)
 
 void	scale_points(t_session *instance, t_point *start, t_point *end)
 {
-	float	map_diagonal;
+	float	diagonal;
 	float	factor;
 
-	map_diagonal = sqrt(instance->width * instance->width + instance->height * instance->height);
-	factor = instance->factor * W_HEIGHT / map_diagonal;
+	diagonal = sqrt(instance->width * instance->width + instance->height * instance->height);
+	factor = instance->factor * W_HEIGHT / diagonal;
 	start->x = round(start->x * factor);
 	start->y = round(start->y * factor);
 	end->x = round(end->x * factor);
