@@ -6,12 +6,23 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 23:17:22 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 13:34:49 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../.minilibx/mlx.h"
+
+typedef struct s_bresenham2
+{
+	int	x0;
+	int	y0;
+	int	dx;
+	int	dy;
+	int	sx;
+	int	sy;
+	int	err;
+}		t_bresenham2;
 
 static void	bresenham_define(t_bresenham *param, t_point *start, t_point *end)
 {
@@ -37,7 +48,7 @@ void	draw_line(t_session *instance, t_point *start, t_point *end)
 	t_bresenham	param;
 	t_color 	color;
 
-	transform_map(instance, start, end);
+	transform_points(instance, start, end);
 	bresenham_define(&param, start, end);
 	init_color(param, &color, start, end);
 	while (1)
@@ -98,7 +109,6 @@ void	draw_map(t_session *instance)
 	t_vector2 i;
 
 	i.y = 0;
-
 	while (i.y < instance->height)
 	{
 		i.x = 0;

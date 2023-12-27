@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 23:07:25 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 13:23:58 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 # define FDF_H
 
+#include <errno.h> // handle errors, set errno to stdout
+
 #include <fcntl.h>
-#include <errno.h>
+#include <stdbool.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <math.h>
@@ -27,13 +29,6 @@ typedef struct s_vector2
 	int	y;
 
 }	t_vector2;
-
-typedef struct s_vector3
-{
-	float	x;
-	float	y;
-	float	z;
-}	t_vector3;
 
 typedef struct s_point
 {
@@ -74,13 +69,14 @@ typedef struct s_color
 typedef struct s_session
 {
 	t_point	**source;
+	t_vector2	offset;
 	int			height;
 	int			width;
 	float		factor;
-	t_vector2	offset;
 	void		*mlx_ser;
 	void		*mlx_win;
 	t_data		mlx_img;
+	bool		iso;
 }	t_session;
 
 #define W_WIDTH 1920
@@ -96,6 +92,7 @@ typedef struct s_session
 #define RIGHT 65363
 #define PLUS 45
 #define MINUS 61
+#define SWAP 112
 
 // string methods
 int		ft_atoi(char *str);
@@ -124,7 +121,7 @@ void	draw_line(t_session *instance, t_point *start, t_point *end);
 void	draw_map(t_session *instance);
 
 //transform methods
-void	transform_map(t_session *instance, t_point *start, t_point *end);
+void	transform_points(t_session *instance, t_point *start, t_point *end);
 
 //color methods
 int		get_color(float ratio, int col_start, int col_end);

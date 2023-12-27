@@ -6,24 +6,30 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:06:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 22:49:10 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 13:25:33 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../.minilibx/mlx.h"
 
-void	convert_isometric(t_point *point)
+
+void	convert_points(t_point *start, t_point *end)
 {
 	t_vector2	tmp;
 
-	tmp.x = point->x;
-	tmp.y = point->y;
-	point->x = (tmp.x - tmp.y) * cos(0.523599);
-	point->y = (tmp.x + tmp.y) * sin(0.523599) - point->z;
+	tmp.x = start->x;
+	tmp.y = start->y;
+	start->x = (tmp.x - tmp.y) * cos(0.523599);
+	start->y = (tmp.x + tmp.y) * sin(0.523599) - start->z;
+
+	tmp.x = end->x;
+	tmp.y = end->y;
+	end->x = (tmp.x - tmp.y) * cos(0.523599);
+	end->y = (tmp.x + tmp.y) * sin(0.523599) - end->z;
 }
 
-void	scale_isometric(t_session *instance, t_point *start, t_point *end)
+void	scale_points(t_session *instance, t_point *start, t_point *end)
 {
 	float	map_diagonal;
 	float	factor;
@@ -36,7 +42,7 @@ void	scale_isometric(t_session *instance, t_point *start, t_point *end)
 	end->y = round(end->y * factor);
 }
 
-void	center_isometric(t_session *instance, t_point *start, t_point *end)
+void	center_points(t_session *instance, t_point *start, t_point *end)
 {
 	t_vector2	offset;
 
@@ -48,24 +54,11 @@ void	center_isometric(t_session *instance, t_point *start, t_point *end)
 	end->y += offset.y;
 }
 
-void	transform_map(t_session *instance, t_point *start, t_point *end)
+void	transform_points(t_session *instance, t_point *start, t_point *end)
 {
-	scale_isometric(instance, start, end);
-	convert_isometric(start);
-	convert_isometric(end);
-	center_isometric(instance, start, end);
+	scale_points(instance, start, end);
+	if (instance->iso)
+		convert_points(start, end);
+	center_points(instance, start, end);
 }
 
-/*
-return to orthographic projection ->
-will need its own centering function, scaling might be different
-void orthographic(t_point *point)
-{
-	t_vector2	og;
-
-	og.x = (point->x / cos(0.523599) + point->y / sin(0.523599)) / 2;
-	og.y = (point->y / sin(0.523599) - point->x / cos(0.523599)) / 2;
-	point->x = og.x;
-	point->y = og.y;
-}
-*/

@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/26 22:56:58 by rlandolt         ###   ########.fr       */
+/*   Updated: 2023/12/27 13:15:59 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,7 @@ int	main(int argc, char **argv)
 			instance->factor = 0.85;
 			instance->offset.x = W_WIDTH * 2 / 5;
 			instance->offset.y = W_HEIGHT * 1 / 5;
+			instance->iso = true;
 
 			mlx_startup(instance);
 
