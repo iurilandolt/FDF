@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 13:48:01 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 21:45:50 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/02 21:59:19 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,19 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	*(unsigned int *)dst = color;
 }
 
-void	init_color(t_dda param, t_color *color, t_point *start, t_point *end)
+void	init_color(t_color *color, t_point *start, t_point *end)
 {
 	color->i = 0;
-	color->max = fmax(fabs((float)param.delta_x), fabs((float)param.delta_y));
 	if (start->c == 0)
 	{
 		if (start->z > 0)
-			color->c_start = RED;
+			color->c_start = ORANGE;
 		else
-			color->c_start = BLUE;
+			color->c_start = PURPLE;
 		if (end->z > 0)
-			color->c_end = RED;
+			color->c_end = ORANGE;
 		else
-			color->c_end = BLUE;
+			color->c_end = PURPLE;
 	}
 	else
 	{
@@ -45,20 +44,17 @@ void	init_color(t_dda param, t_color *color, t_point *start, t_point *end)
 	}
 }
 
-int	interpolate(int start, int end, float ratio)
-{
-	return ((int)(start + ((end - start) * ratio)));
-}
-
 int	get_color(float ratio, int col_start, int col_end)
 {
 	int	r;
 	int	g;
 	int	b;
 
-	r = interpolate((col_start >> 16) & 0xFF, (col_end >> 16) & 0xFF, ratio);
-	g = interpolate((col_start >> 8) & 0xFF, (col_end >> 8) & 0xFF, ratio);
-	b = interpolate(col_start & 0xFF, col_end & 0xFF, ratio);
+	r = ((col_start >> 16) & 0xFF) * (1 - ratio)
+		+ ((col_end >> 16) & 0xFF) * ratio;
+	g = ((col_start >> 8) & 0xFF) * (1 - ratio)
+		+ ((col_end >> 8) & 0xFF) * ratio;
+	b = (col_start & 0xFF) * (1 - ratio) + (col_end & 0xFF) * ratio;
 	return ((r << 16) | (g << 8) | b);
 }
 

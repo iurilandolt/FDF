@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/02 19:56:04 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/02 21:09:05 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	mlx_startup(t_session *instance)
 
 void	mlx_update(t_session *instance)
 {
-	clear_image(instance, 0);
+	clear_image(instance, BLACK);
 	draw_map(instance);
 	mlx_put_image_to_window(instance->mlx_ser,
 		instance->mlx_win, instance->mlx_img.img, 0, 0);

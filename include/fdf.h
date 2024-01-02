@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 21:56:19 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/02 22:03:40 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ typedef struct s_dda
 
 typedef struct s_color
 {
-	int		max;
 	int		c_start;
 	int		c_end;
 	int		i;
@@ -81,8 +80,9 @@ typedef struct s_session
 # define W_WIDTH 1920
 # define W_HEIGHT 1080
 
-# define RED 0xFF2000
-# define BLUE 0x2000FF
+# define BLACK 0x000000
+# define ORANGE 0xFFA525
+# define PURPLE 0x802080
 
 # define ESC 65307
 # define UP 65362
@@ -100,7 +100,7 @@ int		tab_size(char **array);
 void	ft_strlcpy(char *dest, const char *src, size_t size);
 void	*clear(char **array);
 char	**ft_split(const char *str, char c);
-/*	->STRCUT<-	*/
+/*	->STRUCT<-	*/
 void	build_t_point_grid(t_session *instance, int filein);
 void	free_t_points(t_point **grid, int height);
 /*	->INSTANCE<-	*/
@@ -115,7 +115,7 @@ void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	put_pixels(t_session *instance, t_point *start, t_point *end);
 void	draw_map(t_session *instance);
 /*	->COLOR<-	*/
-void	init_color(t_dda param, t_color *color, t_point *start, t_point *end);
+void	init_color(t_color *color, t_point *start, t_point *end);
 void	clear_image(t_session *instance, int color);
 int		get_color(float ratio, int col_start, int col_end);
 

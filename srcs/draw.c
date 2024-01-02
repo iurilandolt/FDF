@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 22:02:40 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/02 21:50:51 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,15 +28,16 @@ void	put_pixels(t_session *instance, t_point *start, t_point *end)
 {
 	t_dda	params;
 	t_color	color;
+	int		pixel_color;
 
 	init_dda(&params, start, end);
-	init_color(params, &color, start, end);
+	init_color(&color, start, end);
 	while (color.i <= params.step)
 	{
-		color.c_ratio = (float)color.i / color.max;
+		color.c_ratio = color.i / params.step;
+		pixel_color = get_color(color.c_ratio, color.c_start, color.c_end);
 		my_mlx_pixel_put(&instance->mlx_img,
-			round(params.current_x), round(params.current_y),
-			get_color(color.c_ratio, color.c_start, color.c_end));
+			round(params.current_x), round(params.current_y), pixel_color);
 		params.current_x += params.x_inc;
 		params.current_y += params.y_inc;
 		color.i++;
