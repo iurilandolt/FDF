@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:03:02 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 22:23:14 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/02 19:31:22 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,10 +75,12 @@ int	ft_atohex(const char *str)
 		str++;
 	if (*str == '0' && (*(str + 1) == 'x' || *(str + 1) == 'X'))
 		str += 2;
-	while ((digit = hextoint(*str)) != -1)
+	digit = hextoint(*str);
+	while (digit != -1)
 	{
 		result = result * 16 + digit;
 		str++;
+		digit = hextoint(*str);
 	}
 	return (result);
 }

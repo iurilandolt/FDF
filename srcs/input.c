@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/20 14:02:48 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 22:19:26 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/02 19:49:25 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,25 +62,25 @@ int	check_fformat(t_session *instance, int filein)
 	char		*line;
 
 	i.y = 0;
-	if ((line = get_next_line(filein)))
+	line = get_next_line(filein);
+	if (line)
 	{
-		++i.y;
 		i.x = check_width(line);
 		free(line);
-		while ((line = get_next_line(filein)))
+		while (++i.y)
 		{
+			line = get_next_line(filein);
+			if (!line)
+				break ;
 			if (check_width(line) != i.x)
 			{
 				free(line);
 				break ;
 			}
-			else
-				++i.y;
 			free(line);
 		}
 	}
 	instance->height = i.y;
-	instance->width = 0;
 	return (i.y);
 }
 
@@ -88,7 +88,8 @@ int	open_file(t_session *instance, char *argv)
 {
 	int	filein;
 
-	if ((filein = open(argv, O_RDONLY)) <= 0)
+	filein = open(argv, O_RDONLY);
+	if (filein <= 0)
 	{
 		perror("42/FDF -> Error\nCould not open file\n");
 		return (-1);

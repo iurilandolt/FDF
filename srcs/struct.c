@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 17:53:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 22:24:40 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/02 19:50:21 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,14 @@ void	build_t_point_grid(t_session *instance, int filein)
 
 	i.y = 0;
 	instance->source = (t_point **)malloc(sizeof(t_point *) * instance->height);
-	while ((line = get_next_line(filein)) && i.y < instance->height)
+	line = get_next_line(filein);
+	while (line && i.y < instance->height)
 	{
 		i.x = 0;
 		tab = ft_split(line, ' ');
 		instance->width = tab_size(tab);
-		instance->source[i.y] = (t_point *)malloc(sizeof(t_point) * instance->width);
+		instance->source[i.y] = (t_point *)malloc(sizeof(
+					t_point) * instance->width);
 		while (tab[i.x] && i.x < instance->width)
 		{
 			set_t_point_values(&instance->source[i.y][i.x], i.x, i.y, tab[i.x]);
@@ -49,7 +51,9 @@ void	build_t_point_grid(t_session *instance, int filein)
 		clear(tab);
 		free(line);
 		i.y++;
+		line = get_next_line(filein);
 	}
+	free(line);
 }
 
 void	free_t_points(t_point **grid, int height)

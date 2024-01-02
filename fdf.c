@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 22:29:09 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/02 19:28:33 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	main(int argc, char **argv)
 				DestroyNotify, StructureNotifyMask, exit_hook, instance);
 			mlx_loop(instance->mlx_ser);
 		}
+		free(instance);
 	}
 	return (0);
 }
