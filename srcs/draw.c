@@ -6,13 +6,20 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/02 21:50:51 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/03 19:38:55 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../.minilibx/mlx.h"
-
+/*
+ * Initialize DDA (Digital Differential Analyzer) algorithm parameters for line drawing.
+ * Sets the current position to the start point and calculates the deltas (differences)
+ * in x and y coordinates between the start and end points. Determines the number of
+ * steps required to draw the line based on the maximum delta value. Sets the increment
+ * size for each step in x and y directions.
+ * fmax -> returns largest of two numbers, fabs -> returns absolute value of a number
+ */
 void	init_dda(t_dda *params, t_point *start, t_point *end)
 {
 	params->current_x = start->x;
@@ -23,7 +30,11 @@ void	init_dda(t_dda *params, t_point *start, t_point *end)
 	params->x_inc = params->delta_x / params->step;
 	params->y_inc = params->delta_y / params->step;
 }
-
+/*
+* initiliaze values for line drawing algorithm
+* checks for color in t_point, if no color is found, one is given based on z value
+* color pixel acorddlingly to ratio beetwen start and end points
+*/
 void	put_pixels(t_session *instance, t_point *start, t_point *end)
 {
 	t_dda	params;
@@ -34,8 +45,8 @@ void	put_pixels(t_session *instance, t_point *start, t_point *end)
 	init_color(&color, start, end);
 	while (color.i <= params.step)
 	{
-		color.c_ratio = color.i / params.step;
-		pixel_color = get_color(color.c_ratio, color.c_start, color.c_end);
+		color.step = color.i / params.step;
+		pixel_color = create_rgb(color.step, color.start, color.end);
 		my_mlx_pixel_put(&instance->mlx_img,
 			round(params.current_x), round(params.current_y), pixel_color);
 		params.current_x += params.x_inc;
@@ -43,7 +54,11 @@ void	put_pixels(t_session *instance, t_point *start, t_point *end)
 		color.i++;
 	}
 }
-
+/*
+*	check line orientation, create temporary t_points to hold values from struct array index
+*	convert points to isometric if needed, scales and centers points to window size
+*	send points to put_pixels
+*/
 void	draw_lines(t_session *instance, int x, int y, int orientation)
 {
 	t_point	start;
@@ -70,7 +85,9 @@ void	draw_lines(t_session *instance, int x, int y, int orientation)
 	transform_points(instance, &start, &end);
 	put_pixels(instance, &start, &end);
 }
-
+/*
+* iterate all points in struct array and draw corresponding lines within broundaries
+*/
 void	draw_map(t_session *instance)
 {
 	t_vector2	i;

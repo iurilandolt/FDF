@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/02 22:03:40 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/03 18:40:59 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ typedef struct s_dda
 
 typedef struct s_color
 {
-	int		c_start;
-	int		c_end;
+	int		start;
+	int		end;
 	int		i;
-	float	c_ratio;
+	float	step;
 }	t_color;
 
 typedef struct s_session
@@ -81,8 +81,8 @@ typedef struct s_session
 # define W_HEIGHT 1080
 
 # define BLACK 0x000000
-# define ORANGE 0xFFA525
-# define PURPLE 0x802080
+# define RED 0xFF0000
+# define BLUE 0x0000FF
 
 # define ESC 65307
 # define UP 65362
@@ -117,6 +117,6 @@ void	draw_map(t_session *instance);
 /*	->COLOR<-	*/
 void	init_color(t_color *color, t_point *start, t_point *end);
 void	clear_image(t_session *instance, int color);
-int		get_color(float ratio, int col_start, int col_end);
+int		create_rgb(float ratio, int start, int end);
 
 #endif
