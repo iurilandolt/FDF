@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/03 19:38:55 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/04 23:22:42 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,5 +105,25 @@ void	draw_map(t_session *instance)
 			i.x++;
 		}
 		i.y++;
+	}
+}
+
+void	reverse_draw_map(t_session *instance)
+{
+	t_vector2 i;
+
+	i.y = instance->height - 1;
+	while (i.y >= 0)
+	{
+		i.x = instance->width - 1;
+		while (i.x >= 0)
+		{
+			if (i.x > 0)
+				draw_lines(instance, i.x - 1, i.y, 0);
+			if (i.y > 0)
+				draw_lines(instance, i.x, i.y - 1, 1);
+			i.x--;
+		}
+		i.y--;
 	}
 }

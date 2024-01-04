@@ -77,3 +77,29 @@ void print_t_points_info(t_point **grid, int height, int width) {
 
 //mlx_loop_hook(&instance->mlx_ser, &handle_key, &instance);
 //mlx_hook(instance->mlx_win, KeyPress, KeyPressMask, handle_key, instance);
+
+void exec_dda(t_session *instance, t_dda *params, t_color *color, int step_count)
+{
+	float step_ratio;
+	int pixel_color;
+
+	if (step_count > params->step)
+		return ;
+	step_ratio = (float)step_count / params->step;
+	pixel_color = create_rgb(step_ratio, color->start, color->end);
+	my_mlx_pixel_put(&instance->mlx_img,
+		round(params->current_x), round(params->current_y), pixel_color);
+	params->current_x += params->x_inc;
+	params->current_y += params->y_inc;
+	exec_dda(instance, params, color, step_count + 1);
+}
+
+void put_pixels(t_session *instance, t_point *start, t_point *end)
+{
+	t_dda params;
+	t_color color;
+
+	init_dda(&params, start, end);
+	init_color(&color, start, end);
+	exec_dda(instance, &params, &color, 0);
+}

@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 22:53:09 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/04 20:28:24 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/04 23:28:52 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ void	swap_projection(t_session *instance)
 		instance->iso = false;
 	else
 		instance->iso = true;
+}
+
+void	rotate_hook(t_session *instance)
+{
+	if (instance->angle < 4)
+		instance->angle += 1.5708;
+	else
+		instance->angle = 0;
 }
 
 int	handle_key(int keycode, t_session *instance)
@@ -44,6 +52,8 @@ int	handle_key(int keycode, t_session *instance)
 		instance->factor -= 0.05;
 	if (keycode == SWAP)
 		swap_projection(instance);
+	if (keycode == ROTATE)
+		rotate_hook(instance);
 	mlx_update(instance);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/04 20:31:21 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/04 22:58:52 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,14 +72,15 @@ typedef struct s_session
 	int			height;
 	int			width;
 	float		factor;
+	float		angle;
 	bool		iso;
 	void		*mlx_ser;
 	void		*mlx_win;
 	t_data		mlx_img;
 }	t_session;
 
-# define W_WIDTH 1080 //1920
-# define W_HEIGHT 720 //1080
+# define W_WIDTH 1920
+# define W_HEIGHT 1080
 
 # define BLACK 0x000000
 # define RED 0xFF0000
@@ -116,6 +117,7 @@ void	transform_points(t_session *instance, t_point *start, t_point *end);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void	put_pixels(t_session *instance, t_point *start, t_point *end);
 void	draw_map(t_session *instance);
+void	reverse_draw_map(t_session *instance);
 /*	->COLOR<-	*/
 void	init_color(t_color *color, t_point *start, t_point *end);
 void	clear_image(t_session *instance, int color);
