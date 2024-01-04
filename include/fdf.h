@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/04 12:50:11 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/04 20:31:21 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ typedef struct s_point
 	int		c;
 }	t_point;
 
-typedef struct s_data {
+typedef struct s_data
+{
 	void	*img;
 	char	*addr;
 	int		bits_per_pixel;
@@ -71,15 +72,14 @@ typedef struct s_session
 	int			height;
 	int			width;
 	float		factor;
-	float		angle;
 	bool		iso;
 	void		*mlx_ser;
 	void		*mlx_win;
 	t_data		mlx_img;
 }	t_session;
 
-# define W_WIDTH 1920
-# define W_HEIGHT 1080
+# define W_WIDTH 1080 //1920
+# define W_HEIGHT 720 //1080
 
 # define BLACK 0x000000
 # define RED 0xFF0000
@@ -90,8 +90,8 @@ typedef struct s_session
 # define DOWN 65364
 # define LEFT 65361
 # define RIGHT 65363
-# define PLUS 45
-# define MINUS 61
+# define PLUS 61
+# define MINUS 45
 # define SWAP 112
 # define ROTATE 114
 

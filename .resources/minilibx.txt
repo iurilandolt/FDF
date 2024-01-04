@@ -74,3 +74,6 @@ void print_t_points_info(t_point **grid, int height, int width) {
     }
     printf("\n");
 }
+
+//mlx_loop_hook(&instance->mlx_ser, &handle_key, &instance);
+//mlx_hook(instance->mlx_win, KeyPress, KeyPressMask, handle_key, instance);
