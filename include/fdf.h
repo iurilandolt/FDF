@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/03 18:40:59 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/04 12:50:11 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ typedef struct s_session
 	int			height;
 	int			width;
 	float		factor;
+	float		angle;
 	bool		iso;
 	void		*mlx_ser;
 	void		*mlx_win;
@@ -92,6 +93,7 @@ typedef struct s_session
 # define PLUS 45
 # define MINUS 61
 # define SWAP 112
+# define ROTATE 114
 
 /*	->PARSE<-	*/
 int		ft_atoi(char *str);

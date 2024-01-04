@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 22:53:09 by rlandolt          #+#    #+#             */
-/*   Updated: 2023/12/27 22:26:29 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/04 12:50:54 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	handle_key(int keycode, t_session *instance)
 		instance->factor += 0.05;
 	if (keycode == SWAP)
 		swap_projection(instance);
+	if (keycode == ROTATE)
+		instance->angle += 0.785398;
 	mlx_update(instance);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:06:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/03 19:36:57 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/04 12:54:47 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,12 +25,28 @@ void	convert_points(t_point *start, t_point *end)
 
 	tmp.x = start->x;
 	tmp.y = start->y;
-	start->x = (tmp.x - tmp.y) * cos(0.523599);
+	start->x = (tmp.x - tmp.y) * cos(0.523599); // += 45 // 0.785398 ?
 	start->y = (tmp.x + tmp.y) * sin(0.523599) - start->z;
 	tmp.x = end->x;
 	tmp.y = end->y;
 	end->x = (tmp.x - tmp.y) * cos(0.523599);
 	end->y = (tmp.x + tmp.y) * sin(0.523599) - end->z;
+}
+/*
+* rotate points arounbd t_point {0,0}
+*/
+void rotate_z(t_session *instance, t_point *start, t_point *end)
+{
+	t_vector2	tmp;
+
+	tmp.x = start->x;
+	tmp.y = start->y;
+	start->x = tmp.x * cos(instance->angle) - tmp.y * sin(instance->angle);
+	start->y = tmp.x * sin(instance->angle) + tmp.y * cos(instance->angle);
+	tmp.x = end->x;
+	tmp.y = end->y;
+	end->x = tmp.x * cos(instance->angle) - tmp.y * sin(instance->angle);
+	end->y = tmp.x * sin(instance->angle) + tmp.y * cos(instance->angle);
 }
 /*
  * Scales the points based on the window size and the diagonal length of the grid.
@@ -68,6 +84,7 @@ void	center_points(t_session *instance, t_point *start, t_point *end)
 void	transform_points(t_session *instance, t_point *start, t_point *end)
 {
 	scale_points(instance, start, end);
+	rotate_z(instance, start, end);
 	if (instance->iso)
 		convert_points(start, end);
 	center_points(instance, start, end);

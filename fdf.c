@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/03 18:41:06 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/04 12:48:29 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	mlx_startup(t_session *instance)
 	instance->offset.x = W_WIDTH * 2 / 5;
 	instance->offset.y = W_HEIGHT * 1 / 5;
 	instance->iso = true;
+	instance->angle = 0; // 45
 	instance->mlx_ser = mlx_init();
 	instance->mlx_win = mlx_new_window(instance->mlx_ser,
 			W_WIDTH, W_HEIGHT, "42 FDF");
