@@ -69,3 +69,22 @@ void put_pixels(t_session *instance, t_point *start, t_point *end)
 	init_color(&color, start, end);
 	exec_dda(instance, &params, &color, 0);
 }
+
+
+void draw_map_recursive(t_session *instance, int x, int y) {
+	if (y >= instance->height)
+		return;
+
+	if (x < instance->width - 1)
+		draw_lines(instance, x, y, 0);
+	if (y < instance->height - 1)
+		draw_lines(instance, x, y, 1);
+	if (x < instance->width - 1)
+		draw_map_recursive(instance, x + 1, y);
+	else
+		draw_map_recursive(instance, 0, y + 1);
+}
+
+void draw_map(t_session *instance) {
+    draw_map_recursive(instance, 0, 0);
+}

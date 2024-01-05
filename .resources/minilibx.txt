@@ -77,3 +77,6 @@ void print_t_points_info(t_point **grid, int height, int width) {
 
 //mlx_loop_hook(&instance->mlx_ser, &handle_key, &instance);
 //mlx_hook(instance->mlx_win, KeyPress, KeyPressMask, handle_key, instance);
+
+	if (start->x > W_WIDTH || start->y > W_HEIGHT || start->y > W_WIDTH || end->y > W_HEIGHT)
+		return ;

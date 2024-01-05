@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/04 23:22:42 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/05 15:11:09 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	draw_lines(t_session *instance, int x, int y, int orientation)
 /*
 * iterate all points in struct array and draw corresponding lines within broundaries
 */
+
 void	draw_map(t_session *instance)
 {
 	t_vector2	i;
@@ -107,6 +108,7 @@ void	draw_map(t_session *instance)
 		i.y++;
 	}
 }
+
 
 void	reverse_draw_map(t_session *instance)
 {
