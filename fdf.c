@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/04 23:03:15 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/05 01:05:35 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	mlx_startup(t_session *instance)
 	instance->offset.x = W_WIDTH * 2 / 5;
 	instance->offset.y = W_HEIGHT * 1 / 5;
 	instance->iso = true;
+	instance->ort = false;
 	instance->angle = 0;
 	instance->mlx_ser = mlx_init();
 	instance->mlx_win = mlx_new_window(instance->mlx_ser,
@@ -85,7 +86,8 @@ int	main(int argc, char **argv)
 			build_t_point_grid(instance, filein);
 			mlx_startup(instance);
 			//mlx_key_hook(instance->mlx_win, handle_key, instance);
-			mlx_hook(instance->mlx_win, KeyPress, KeyPressMask, handle_key, instance);
+			mlx_hook(instance->mlx_win,
+				KeyPress, KeyPressMask, handle_key, instance);
 			mlx_hook(instance->mlx_win,
 				DestroyNotify, StructureNotifyMask, exit_hook, instance);
 			mlx_loop(instance->mlx_ser);

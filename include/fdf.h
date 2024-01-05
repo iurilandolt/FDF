@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/04 22:58:52 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/05 00:46:26 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ typedef struct s_session
 	float		factor;
 	float		angle;
 	bool		iso;
+	bool		ort;
 	void		*mlx_ser;
 	void		*mlx_win;
 	t_data		mlx_img;

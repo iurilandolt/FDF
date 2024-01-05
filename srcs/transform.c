@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:06:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/04 23:24:36 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/05 00:57:12 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,21 @@
  * - Rotation: Applied using cosine and sine of 30 degrees to the skewed coordinates.
  * - Elevation Adjustment: The z-coordinate value is subtracted from the y-coordinate.
  */
-void	convert_points(t_point *start, t_point *end)
+void	convert_points(t_session *instance, t_point *start, t_point *end)
 {
 	t_vector2	tmp;
 
+	if (!instance->iso)
+	{
+		if (instance->ort)
+			return ;
+		start->y = -start->z;
+		end->y = -end->z;
+		return ;
+	}
 	tmp.x = start->x;
 	tmp.y = start->y;
-	start->x = (tmp.x - tmp.y) * cos(0.523599); // += 45 // 0.785398 ?
+	start->x = (tmp.x - tmp.y) * cos(0.523599);
 	start->y = (tmp.x + tmp.y) * sin(0.523599) - start->z;
 	tmp.x = end->x;
 	tmp.y = end->y;
@@ -68,32 +76,26 @@ void	center_points(t_session *instance, t_point *start, t_point *end)
 	end->y += offset.y;
 }
 
-void rotate_zaxis(t_point *start, t_point *end, float angle)
+void rotate_zaxis(t_session *instance, t_point *start, t_point *end)
 {
 	t_vector2 tmp;
 
 	tmp.x = start->x;
 	tmp.y = start->y;
-	start->x = tmp.x * cos(angle) - tmp.y * sin(angle);
-	start->y = tmp.x * sin(angle) + tmp.y * cos(angle);
-
+	start->x = tmp.x * cos(instance->angle) - tmp.y * sin(instance->angle);
+	start->y = tmp.x * sin(instance->angle) + tmp.y * cos(instance->angle);
 	tmp.x = end->x;
 	tmp.y = end->y;
-	end->x = tmp.x * cos(angle) - tmp.y * sin(angle);
-	end->y = tmp.x * sin(angle) + tmp.y * cos(angle);
+	end->x = tmp.x * cos(instance->angle) - tmp.y * sin(instance->angle);
+	end->y = tmp.x * sin(instance->angle) + tmp.y * cos(instance->angle);
+
 }
 
 void	transform_points(t_session *instance, t_point *start, t_point *end)
 {
 	scale_points(instance, start, end);
-	rotate_zaxis(start, end, instance->angle);
-	if (instance->iso)
-		convert_points(start, end);
-	else
-	{
-		start->y = -start->z;
-		end->y = -end->z;
-
-	}
+	if (instance->angle != 0)
+		rotate_zaxis(instance ,start, end);
+	convert_points(instance, start, end);
 	center_points(instance, start, end);
 }

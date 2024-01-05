@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 22:53:09 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/04 23:28:52 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/05 00:55:35 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,16 @@ int	exit_hook(t_session *instance)
 	return (0);
 }
 
-void	swap_projection(t_session *instance)
+void swap_projection(t_session *instance)
 {
-	if (instance->iso)
+	if (instance->iso && !instance->ort)
+	{
 		instance->iso = false;
+		instance->ort = true;
+	}
+	else if (!instance->iso && instance->ort)
+		instance->ort= false;
+
 	else
 		instance->iso = true;
 }
