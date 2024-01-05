@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:06:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/05 00:57:12 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/05 12:46:26 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,12 @@ void	convert_points(t_session *instance, t_point *start, t_point *end)
 	}
 	tmp.x = start->x;
 	tmp.y = start->y;
-	start->x = (tmp.x - tmp.y) * cos(0.523599);
-	start->y = (tmp.x + tmp.y) * sin(0.523599) - start->z;
+	start->x = (tmp.x - tmp.y) * cos(DEG30);
+	start->y = (tmp.x + tmp.y) * sin(DEG30) - start->z;
 	tmp.x = end->x;
 	tmp.y = end->y;
-	end->x = (tmp.x - tmp.y) * cos(0.523599);
-	end->y = (tmp.x + tmp.y) * sin(0.523599) - end->z;
+	end->x = (tmp.x - tmp.y) * cos(DEG30);
+	end->y = (tmp.x + tmp.y) * sin(DEG30) - end->z;
 }
 
 /*
@@ -64,6 +64,7 @@ void	scale_points(t_session *instance, t_point *start, t_point *end)
 * Adjusts the position of the points by a fixed offset,
 * allows translation.
 */
+
 void	center_points(t_session *instance, t_point *start, t_point *end)
 {
 	t_vector2	offset;

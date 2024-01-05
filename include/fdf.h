@@ -6,33 +6,13 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/05 00:46:26 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/05 13:00:21 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FDF_H
 
 # define FDF_H
-
-# define W_WIDTH 1920
-# define W_HEIGHT 1080
-
-# define BLACK 0x000000
-# define RED 0xFF0000
-# define BLUE 0x0000FF
-
-# define ESC 65307
-# define UP 65362
-# define DOWN 65364
-# define LEFT 65361
-# define RIGHT 65363
-# define PLUS 61
-# define MINUS 45
-# define SWAP 112
-# define ROTATE 114
-
-# define DEG35 0.523599
-# define DEG90 1.5708
 
 # include <fcntl.h>
 # include <stdbool.h>
@@ -100,6 +80,27 @@ typedef struct s_session
 	t_data		mlx_img;
 }	t_session;
 
+# define W_WIDTH 1920
+# define W_HEIGHT 1080
+
+# define BLACK 0x000000
+# define RED 0xFF0000
+# define BLUE 0x0000FF
+
+# define ESC 65307
+# define UP 65362
+# define DOWN 65364
+# define LEFT 65361
+# define RIGHT 65363
+# define PLUS 61
+# define MINUS 45
+# define SWAP 112
+# define ROTATE 114
+# define CENTER 99
+
+# define DEG30 0.523599
+# define DEG90 1.5708
+
 /*	->PARSE<-	*/
 int		ft_atoi(char *str);
 int		ft_atohex(const char *str);
@@ -116,6 +117,7 @@ void	mlx_shutdown(t_session *instance);
 void	mlx_update(t_session *instance);
 int		exit_hook(t_session *instance);
 int		handle_key(int keycode, t_session *instance);
+void	reset_projection(t_session *instance);
 /*	->GRAPHICS<	*/
 void	transform_points(t_session *instance, t_point *start, t_point *end);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);

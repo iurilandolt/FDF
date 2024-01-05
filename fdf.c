@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/05 01:05:35 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/05 12:39:12 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	mlx_shutdown(t_session *instance)
 void	mlx_startup(t_session *instance)
 {
 	instance->factor = 1.0;
-	instance->offset.x = W_WIDTH * 2 / 5;
-	instance->offset.y = W_HEIGHT * 1 / 5;
+	instance->offset.x = W_WIDTH * 0.4;
+	instance->offset.y = W_HEIGHT * 0.2;
 	instance->iso = true;
 	instance->ort = false;
 	instance->angle = 0;
