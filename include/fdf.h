@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/05 14:39:49 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/05 18:49:05 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ typedef struct s_session
 	t_data		mlx_img;
 }	t_session;
 
-# define W_WIDTH 1080//1920
-# define W_HEIGHT 720//1080
+# define W_WIDTH 1920
+# define W_HEIGHT 1080
 
 # define BLACK 0x000000
 # define RED 0xFF0000

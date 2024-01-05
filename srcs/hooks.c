@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/26 22:53:09 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/05 12:45:32 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/05 18:44:28 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	rotate_hook(t_session *instance)
 		instance->angle += DEG90;
 	else
 		instance->angle = 0;
-
 }
 
 void	reset_projection(t_session *instance)
@@ -74,3 +73,4 @@ int	handle_key(int keycode, t_session *instance)
 	mlx_update(instance);
 	return (0);
 }
+

@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:06:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/05 15:03:18 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/05 19:09:52 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,24 @@ void	center_points(t_session *instance, t_point *start, t_point *end)
 
 	offset.x = instance->offset.x;
 	offset.y = instance->offset.y;
+	if (instance->iso)
+	{
+		if (instance->angle > 0 && instance->angle < 3)
+		{
+			offset.x += W_WIDTH * (0.4 * instance->factor);
+			offset.y += W_HEIGHT * ( 0.4 * instance->factor);
+		}
+		else if (instance->angle > 3 && instance->angle < 4)
+		{
+			offset.x += W_WIDTH * (0.1 * instance->factor);
+			offset.y += W_HEIGHT * (0.7 * instance->factor);
+		}
+		else if (instance->angle > 4)
+		{
+			offset.x -= W_WIDTH * 0.2 * (instance->factor);
+			offset.y += W_HEIGHT * 0.4 * ( instance->factor);
+		}
+	}
 	start->x += offset.x;
 	start->y += offset.y;
 	end->x += offset.x;
