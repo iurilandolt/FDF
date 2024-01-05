@@ -14,6 +14,26 @@
 
 # define FDF_H
 
+# define W_WIDTH 1920
+# define W_HEIGHT 1080
+
+# define BLACK 0x000000
+# define RED 0xFF0000
+# define BLUE 0x0000FF
+
+# define ESC 65307
+# define UP 65362
+# define DOWN 65364
+# define LEFT 65361
+# define RIGHT 65363
+# define PLUS 61
+# define MINUS 45
+# define SWAP 112
+# define ROTATE 114
+
+# define DEG35 0.523599
+# define DEG90 1.5708
+
 # include <fcntl.h>
 # include <stdbool.h>
 # include <unistd.h>
@@ -79,23 +99,6 @@ typedef struct s_session
 	void		*mlx_win;
 	t_data		mlx_img;
 }	t_session;
-
-# define W_WIDTH 1920
-# define W_HEIGHT 1080
-
-# define BLACK 0x000000
-# define RED 0xFF0000
-# define BLUE 0x0000FF
-
-# define ESC 65307
-# define UP 65362
-# define DOWN 65364
-# define LEFT 65361
-# define RIGHT 65363
-# define PLUS 61
-# define MINUS 45
-# define SWAP 112
-# define ROTATE 114
 
 /*	->PARSE<-	*/
 int		ft_atoi(char *str);
