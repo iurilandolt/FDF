@@ -17,6 +17,8 @@ etc.
 
 understanding windows / graphical servers X11 / small intro.
 
+it is mandatory to use a specific struct given to us by the library documentation;
+
 	typedef struct s_data
 	{
 		void	*img;
@@ -25,23 +27,15 @@ understanding windows / graphical servers X11 / small intro.
 		int	line_length;
 		int	endian;
 	}		t_data;
-
-	void	mlx_startup(t_session *instance)
-	{
-		instance->mlx_ser = mlx_init();
-		instance->mlx_win = mlx_new_window(instance->mlx_ser,
-				W_WIDTH, W_HEIGHT, "42 FDF");
-		instance->mlx_img.img = mlx_new_image(instance->mlx_ser, W_WIDTH, W_HEIGHT);
-		instance->mlx_img.addr = mlx_get_data_addr(instance->mlx_img.img, 
-				&instance->mlx_img.bits_per_pixel, &instance->mlx_img.line_length,
-				&instance->mlx_img.endian);
-		if (!instance->mlx_ser || !instance->mlx_win || !instance->mlx_img.img)
-			mlx_shutdown(instance);
-	}
-
-	mlx_loop(instance->mlx_ser);
  
-waiting for next frame / drawing pixels
+this holds pointers to where the image we draw and the each pixel information is stored before being pushed to the screen.
+
+with this library we can write the pixel values and coordinates to be stored in a 1D character array, 
+the library handles the arithmetic to know where each pixel goes where, where each line ends and a new one begins etc.
+
+this method as opposite to changing the pixels directly in the window without waiting for the next frame, wich is really slow, is a lot more efficient,
+and allows us to push a complete image to the window in a single frame, here is an example of a function that allows to write the image to a t_data structure and then
+use the minilibx libary function: mlx_put_image_to_window().
 
 	void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	{
@@ -54,6 +48,25 @@ waiting for next frame / drawing pixels
 	}
 
 	mlx_put_image_to_window(instance->mlx_ser, instance->mlx_win, instance->mlx_img.img, 0, 0);
+
+to initialize the graphical server and assign a window to it there is a series of step we must take.
+here is an example of a startup sequence; iniitate graphical server, alloc new window, alloc new image, set values and pointers for the t_data struct, keep the window open.
+
+ 	void	mlx_startup(t_session *instance)
+	{
+		instance->mlx_ser = mlx_init();
+		instance->mlx_win = mlx_new_window(instance->mlx_ser, W_WIDTH, W_HEIGHT, "42 FDF");
+		instance->mlx_img.img = mlx_new_image(instance->mlx_ser, W_WIDTH, W_HEIGHT);
+		instance->mlx_img.addr = mlx_get_data_addr(instance->mlx_img.img, 
+				&instance->mlx_img.bits_per_pixel, &instance->mlx_img.line_length,
+				&instance->mlx_img.endian);
+		if (!instance->mlx_ser || !instance->mlx_win || !instance->mlx_img.img)
+			mlx_shutdown(instance);
+	}
+
+to keep the window open we use;
+
+	mlx_loop(instance->mlx_ser);
 
 Due to norm compliance this project relies extensinvely in structs.
 This will allows us to hold a lot of information regarding the constant variables of our client, graphical server window, the state of the image, and the state of the 3D volume we are representing, among other things like color, vectors, drawing algorithm paramaters etc.
