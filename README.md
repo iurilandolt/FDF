@@ -12,7 +12,9 @@ no for loops.
 no declarations/initializations on control structures.
 
 functions have a max of 5 arguments and a total of 25 lines and 80 tokens.
+
 maximum 5 functions per file.
+
 no functions from any libray except for,
 
 open() / close() / read / write / malloc / free
@@ -104,15 +106,20 @@ It is also a cheaky way not to waste lines/colums with variable initializations/
 	}	t_session;
 
 in regards to parsing we wont go into much detail, however there are some key points;
+
 the file must exist :D
+
 our binary must have permision to read the file.
+
 the file extension must be '.fdf'
+
 the file must be readable, i.e; 
-	the number of elements per line must be the same for every line.
- 	the grid is a paralelipipede
+
+the number of elements per line must be the same for every line. the grid is a paralelipipede.
 
 .fdf files have two variants, standard files with only XYZ information, and files with embebed color.
  so each element of the 2D character map can either be an int, or an int follow by a hex value representing color.
+ 
  so either '0' or '0,0xff respectively' 
   
 after this we create a 2D array of t_point structs that will hold the cartesian coordinates from our input file.
@@ -126,6 +133,21 @@ after this we create a 2D array of t_point structs that will hold the cartesian 
 	}	t_point;
 
 you can easily achieve this with variations of the split, atoi, and get_next_line functions.
+
+	
+	void	set_t_point_values(t_point *point, int x, int y, char *tab)
+	{
+		char		**color;
+	
+		color = ft_split(tab, ',');
+		point->x = x;
+		point->y = y;
+		point->z = ft_atoi(tab);
+		point->c = 0;
+		if (color[1])
+			point->c = ft_atohex(color[1]);
+		clear(color);
+	}
 
 	void	build_t_point_grid(t_session *instance, int filein)
 	{
@@ -187,16 +209,60 @@ for rotation around the z axis you can apply similar logic
 	tmp.x * cos(instance->angle) - tmp.y * sin(instance->angle);
 	tmp.x * sin(instance->angle) + tmp.y * cos(instance->angle);
 
-after that we use a line drawing algorightm, DDA, to print all the horizontal and vertical lines beetween points, starting at 0,0.
+after scaling, converting, rotating and centering we need to draw lines beetween all the points.
+for that you'll need to implement a line drawing algorithm, such as DDA or Bresenham.
+i find DDA easier to implement, here is a quick run down
 
-explain DDA logic.
+we'll need reference to
 
-during the application of the DDA algo we also apply color,
-in the case that the read file has no color values, we will give a color value based on the Z value of each point.
-then using the number of steps necessaery to draw each line, we set a ratio of color to be applied to each pixel on the line, starting with the color of the start point, and ending in the color of the end point.
-with each step we blend the color value from the start color to the end color.
+start & end points (x,y)
 
-explain zoom, translation and rotation
+	current_x = start->x;
+	current_y = start->y;
+ 
+difference beetween start and end (x,y)
+ 
+ 	delta_x = end->x - start->x;
+	delta_y = end->y - start->y;
+ 
+ the number of steps beetween start and end
 
+   current step
+   
+	step = fmax(fabs(params->delta_x), fabs(params->delta_y)); // why not abs?
+ 
+ increment size beetween steps (x,y)
+ 
+	x_inc = params->delta_x / params->step;
+	y_inc = params->delta_y / params->step;
+ 
+knowing this you can iterate all steps beetween start and end incrementing x and y by their corresponding increment values at every iteration,
+this should allow you to use your pixel_put function and 'paint' every pixel beetween those two pixels forming a line.
 
-explain the minilibx libary, startup, update and shutdown functions.
+	x_inc = params->delta_x / params->step;
+	y_inc = params->delta_y / params->step;
+
+	current_x += params.x_inc;
+	current_y += params.y_inc;
+   
+if you intend to apply color to the projections whose files do not bring any embebed values, you can do that based on the image angle, or the z value achieving gradients.
+since you know the number of 'steps' in a line, you can use that value to implement some kind of interpolation beetween the start and the end color.
+
+		while (i <= params.step)
+			color.step = i / params.step;
+			pixel_color = create_rgb(color.step, color.start, color.end);
+
+	int	create_rgb(float ratio, int start, int end)
+	{
+		int	r;
+		int	g;
+		int	b;
+	
+		r = interpolate(ratio, (start >> 16) & 0xFF, (end >> 16) & 0xFF);
+		g = interpolate(ratio, (start >> 8) & 0xFF, (end >> 8) & 0xFF);
+		b = interpolate(ratio, start & 0xFF, end & 0xFF);
+		return ((r << 16) | (g << 8) | b);
+	}
+ 
+	
+
