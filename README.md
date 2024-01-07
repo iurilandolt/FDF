@@ -1,21 +1,29 @@
 # fdf  - fil de fer
 
-fdf is a program that generates 3D wireframe images from 2D character maps with cartesian coordinates.
+fdf is the first program from the 42 curriculum that has a graphical interface/window.
+it renders 3D wireframe images from a file with cartesian coordinates using the minilibx library.
+
+-> https://harm-smits.github.io/42docs/libs/minilibx
 
 this project complies with the 42 Network norms.
 
-no for loops,
-no declarations/initializations on control structures;
-functions have a max of 5 arguments and a total of 25 lines, 80 colums.
+no for loops.
+
+no declarations/initializations on control structures.
+
+functions have a max of 5 arguments and a total of 25 lines and 80 tokens.
 maximum 5 functions per file.
 no functions from any libray except for,
-	open() / close() / read / write / malloc / free
-	perror / strerror / exit
-	anything from math.h
 
-etc.
+open() / close() / read / write / malloc / free
+perror / strerror / exit
+anything from math.h
 
-understanding windows / graphical servers X11 / small intro.
+minilibx wworks with a graphical server like X-Window and allows us to instanciate a window and manipulate the pixels inside it.
+graphical servers in linux have a much extensivier use around network but we do not explore this in this project.
+it is however a good ideia to get familiar with the concepts of display, window and image among other things.
+
+-> https://www.techopedia.com/definition/10101/x-window-system
 
 it is mandatory to use a specific struct given to us by the library documentation;
 
@@ -28,14 +36,14 @@ it is mandatory to use a specific struct given to us by the library documentatio
 		int	endian;
 	}		t_data;
  
-this holds pointers to where the image we draw and the each pixel information is stored before being pushed to the screen.
+this holds pointers to where the image we draw is stored and also to where each pixels information is stored before we push the image to the window;
 
-with this library we can write the pixel values and coordinates to be stored in a 1D character array, 
+with this library we can write the pixel values and coordinates to be stored in a linear character array, 
 the library handles the arithmetic to know where each pixel goes where, where each line ends and a new one begins etc.
 
 this method as opposite to changing the pixels directly in the window without waiting for the next frame, wich is really slow, is a lot more efficient,
-and allows us to push a complete image to the window in a single frame, here is an example of a function that allows to write the image to a t_data structure and then
-use the minilibx libary function: mlx_put_image_to_window().
+and allows us to push a complete image to the window in a single frame, here is an example of a function that allows us to write the image to a t_data structure and then
+use the minilibx libary function: mlx_put_image_to_window() to instantly push the iamge to the window.
 
 	void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
 	{
@@ -49,8 +57,16 @@ use the minilibx libary function: mlx_put_image_to_window().
 
 	mlx_put_image_to_window(instance->mlx_ser, instance->mlx_win, instance->mlx_img.img, 0, 0);
 
-to initialize the graphical server and assign a window to it there is a series of step we must take.
-here is an example of a startup sequence; iniitate graphical server, alloc new window, alloc new image, set values and pointers for the t_data struct, keep the window open.
+to initialize the graphical server and assign a window to it there is a series of steps we must take.
+here is an example of a startup sequence; 
+
+iniitate graphical server, 
+
+alloc new window, alloc new image, 
+
+set values and pointers for the t_data struct, 
+
+keep the window open.
 
  	void	mlx_startup(t_session *instance)
 	{
