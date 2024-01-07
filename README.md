@@ -96,7 +96,7 @@ the file must be readable, i.e;
  	the grid is a paralelipipede
 
 .fdf files have two variants, standard files with only XYZ information, and files with embebed color.
- so each element of the 2D character map can either be an int, or an int follow by a hex value.
+ so each element of the 2D character map can either be an int, or an int follow by a hex value representing color.
  so either '0' or '0,0xff respectively' 
   
 after this we create a 2D array of t_point structs that will hold the cartesian coordinates from our input file.
@@ -144,6 +144,7 @@ with our struct ready we can now start to print our t_points across the window.
 for this we must define a relationship in scale, how many t_points in the x axis do we have in relation to the window width,
 and how many in the y axis in relation to the window height.
 we also need to consider that the window might not be a square, and that scaling to an aspect ratio that is not 1:1 will distort the shape of our object.
+for scaling in screens it is common to use the diagonal of the screen, i did something similar;
 
 	diagonal = hypot(instance->width, instance->height);
 	factor = instance->factor * W_HEIGHT / diagonal;
@@ -151,7 +152,24 @@ we also need to consider that the window might not be a square, and that scaling
 	point->y = round(start->y * factor);
 	point->z = round(start->z * instance->factor);
 
-explain conversion, scaling and centering.
+after setting a relation of scale beetween our map and the window we need to decide where the first point will be printed.
+i use a vector2 variable to devide the screen horizontaly and verticaly and decide wich pixel will be my t_point{0,0}.
+you'll most likely find some division ratios more adequate for particular perspectives since the size and shape of the volume might change considerably.
+
+	instance->offset.x = W_WIDTH * 0.4;
+	instance->offset.y = W_HEIGHT * 0.2;
+
+at this point we only have a 2D image, a top down, paralel perspective view of our map in the shape of a grid.
+our goal is to convert this projection to isometric, there a couple of ways to achieve this, in theory any viewing angle beetween 30º and 45º can be considered isometric.
+i used a formula with the cosine and sine functions on a 30º value.
+
+	(tmp.x - tmp.y) * cos(DEG30);
+	(tmp.x + tmp.y) * sin(DEG30) - tmp->z;
+
+for rotation around the z axis you can apply similar logic
+
+	tmp.x * cos(instance->angle) - tmp.y * sin(instance->angle);
+	tmp.x * sin(instance->angle) + tmp.y * cos(instance->angle);
 
 after that we use a line drawing algorightm, DDA, to print all the horizontal and vertical lines beetween points, starting at 0,0.
 
