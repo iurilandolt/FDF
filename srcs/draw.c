@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/07 13:18:57 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/07 13:26:32 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	init_dda(t_dda *params, t_point *start, t_point *end)
 	params->current_y = start->y;
 	params->delta_x = end->x - start->x;
 	params->delta_y = end->y - start->y;
-	params->step = fmax(fabs(params->delta_x), fabs(params->delta_y));
+	params->step = fmax(fabs(params->delta_x), fabs(params->delta_y)); // why not abs?
 	params->x_inc = params->delta_x / params->step;
 	params->y_inc = params->delta_y / params->step;
 }
@@ -37,7 +37,7 @@ void	init_dda(t_dda *params, t_point *start, t_point *end)
 */
 void	put_pixels(t_session *instance, t_point *start, t_point *end)
 {
-	t_dda	params;
+	t_dda	params; // name id dda instead of params, to get ddd->current_x etc
 	t_color	color;
 	int		pixel_color;
 
