@@ -226,10 +226,8 @@ difference beetween start and end (x,y)
 	delta_y = end->y - start->y;
  
  the number of steps beetween start and end
-
-   current step
    
-	step = fmax(fabs(params->delta_x), fabs(params->delta_y)); // why not abs?
+	step = fmax(fabs(params->delta_x), fabs(params->delta_y)); 
  
  increment size beetween steps (x,y)
  
@@ -238,9 +236,6 @@ difference beetween start and end (x,y)
  
 knowing this you can iterate all steps beetween start and end incrementing x and y by their corresponding increment values at every iteration,
 this should allow you to use your pixel_put function and 'paint' every pixel beetween those two pixels forming a line.
-
-	x_inc = params->delta_x / params->step;
-	y_inc = params->delta_y / params->step;
 
 	current_x += params.x_inc;
 	current_y += params.y_inc;
@@ -264,5 +259,38 @@ since you know the number of 'steps' in a line, you can use that value to implem
 		return ((r << 16) | (g << 8) | b);
 	}
  
-	
+with the image drawn we are stuck in the mlx_loop(), there is no way to interact with the image or with the window, not even the close button.
+for this we need to use 'hooks'
+
+hooks are basically signal generators and recievers that will work asyncronous to our loop, allowing us to change values being used by the loop or even ending it.
+-> https://harm-smits.github.io/42docs/libs/minilibx/hooks.html <- here are a few usefull examples.
+
+	mlx_hook(instance->mlx_win, KeyPress, KeyPressMask, handle_key, instance);
+	mlx_hook(instance->mlx_win, DestroyNotify, StructureNotifyMask, exit_hook, instance);
+   	mlx_key_hook(instance->mlx_win, handle_key, instance);
+
+to properly end the loop and shutdown the graphical server we should have in account that we must close the program imidiatly after ending the loop in order not to get any segfaults.
+the mlx library has specific functions to deal with this, allocated memory should also be addressed at this point.
+
+	void	mlx_shutdown(t_session *instance)
+	{
+		mlx_loop_end(instance->mlx_ser);
+		if (instance->mlx_img.img)
+			mlx_destroy_image(instance->mlx_ser, instance->mlx_img.img);
+		if (instance->mlx_win)
+		{
+			mlx_destroy_window(instance->mlx_ser, instance->mlx_win);
+			instance->mlx_win = NULL;
+		}
+		if (instance->mlx_ser)
+		{
+			mlx_destroy_display(instance->mlx_ser);
+			free(instance->mlx_ser);
+		}
+		free_t_points(instance->source, instance->height);
+		free(instance);
+		exit(0);
+	}
+
+ 
 
