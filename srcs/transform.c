@@ -6,12 +6,13 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:06:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/05 19:09:52 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/07 12:45:54 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../.minilibx/mlx.h"
+
 /*
  * Converts Cartesian coordinates to isometric coordinates for both start and end points.
  * 30 degrees (or 0.523599 radians) isometric.
@@ -110,9 +111,12 @@ void rotate_zaxis(t_session *instance, t_point *start, t_point *end)
 
 }
 
+
+
 void	transform_points(t_session *instance, t_point *start, t_point *end)
 {
 	scale_points(instance, start, end);
+
 	if (instance->angle != 0)
 		rotate_zaxis(instance ,start, end);
 	convert_points(instance, start, end);

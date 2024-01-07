@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:24:49 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/05 19:05:38 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/07 12:38:07 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,9 @@ int	main(int argc, char **argv)
 		{
 			build_t_point_grid(instance, filein);
 			mlx_startup(instance);
-			mlx_key_hook(instance->mlx_win, handle_key, instance);
+			//mlx_key_hook(instance->mlx_win, handle_key, instance);
+			mlx_hook(instance->mlx_win,
+				KeyPress, KeyPressMask, handle_key, instance);
 			mlx_hook(instance->mlx_win,
 				DestroyNotify, StructureNotifyMask, exit_hook, instance);
 			mlx_loop(instance->mlx_ser);

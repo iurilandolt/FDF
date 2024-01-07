@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 17:53:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/02 19:50:21 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/07 13:19:22 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,4 +64,17 @@ void	free_t_points(t_point **grid, int height)
 	while (y < height)
 		free(grid[y++]);
 	free(grid);
+}
+
+int	check_bounds(t_point *start, t_point *end)
+{
+	if (start->x < -MOD || start->y < -MOD)
+		return (0);
+	if (end->x < -MOD || end->y < -MOD)
+		return (0);
+	if (start->x > W_WIDTH + MOD || start->y > W_HEIGHT + MOD)
+		return (0);
+	if (end->x > W_WIDTH + MOD || end->y > W_HEIGHT + MOD)
+		return (0);
+	return (1);
 }

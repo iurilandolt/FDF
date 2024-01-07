@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/05 19:05:26 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/07 13:18:57 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,30 +59,20 @@ void	put_pixels(t_session *instance, t_point *start, t_point *end)
 *	convert points to isometric if needed, scales and centers points to window size
 *	send points to put_pixels
 */
+
 void	draw_lines(t_session *instance, int x, int y, int orientation)
 {
 	t_point	start;
 	t_point	end;
 
-	start.x = x;
-	start.y = y;
-	start.z = instance->source[y][x].z;
-	start.c = instance->source[y][x].c;
+	start = instance->source[y][x];
 	if (orientation == 0)
-	{
-		end.x = x + 1;
-		end.y = y;
-		end.z = instance->source[y][x + 1].z;
-		end.c = instance->source[y][x + 1].c;
-	}
+		end = instance->source[y][x + 1];
 	else
-	{
-		end.x = x;
-		end.y = y + 1;
-		end.z = instance->source[y + 1][x].z;
-		end.c = instance->source[y + 1][x].c;
-	}
+		end = instance->source[y + 1][x];
 	transform_points(instance, &start, &end);
+	if (!check_bounds(&start, &end))
+		return ;
 	put_pixels(instance, &start, &end);
 }
 /*
@@ -108,7 +98,6 @@ void	draw_map(t_session *instance)
 		i.y++;
 	}
 }
-
 
 void	reverse_draw_map(t_session *instance)
 {
