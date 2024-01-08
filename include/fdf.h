@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/08 16:15:00 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:39:53 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,8 @@ typedef struct s_session
 # define MOD 256
 
 # define BLACK 0x000000
-# define RED 0xFF0000
-# define BLUE 0x0000FF
+# define RED 0xff4500
+# define BLUE 0x191970
 
 # define ESC 65307
 # define UP 65362
