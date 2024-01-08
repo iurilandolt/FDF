@@ -227,7 +227,7 @@ delta_y = end->y - start->y;
 ```c 
 step = fmax(fabs(params->delta_x), fabs(params->delta_y)); 
 ```
-increment size beetween steps (x,y)
+- increment size beetween steps (x,y)
 ```c
 x_inc = params->delta_x / params->step;
 y_inc = params->delta_y / params->step;
