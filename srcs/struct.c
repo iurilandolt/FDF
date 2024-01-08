@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/22 17:53:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/07 13:19:22 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:14:42 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,4 +77,23 @@ int	check_bounds(t_point *start, t_point *end)
 	if (end->x > W_WIDTH + MOD || end->y > W_HEIGHT + MOD)
 		return (0);
 	return (1);
+}
+
+void	offset_for_angle(t_session *instance, t_vector2 *offset)
+{
+	if (instance->angle > 0 && instance->angle < 3)
+	{
+		offset->x += W_WIDTH * (0.4 * instance->factor);
+		offset->y += W_HEIGHT * (0.4 * instance->factor);
+	}
+	else if (instance->angle > 3 && instance->angle < 4)
+	{
+		offset->x += W_WIDTH * (0.1 * instance->factor);
+		offset->y += W_HEIGHT * (0.7 * instance->factor);
+	}
+	else if (instance->angle > 4)
+	{
+		offset->x -= W_WIDTH * 0.2 * (instance->factor);
+		offset->y += W_HEIGHT * 0.4 * (instance->factor);
+	}
 }

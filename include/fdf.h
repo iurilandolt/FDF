@@ -6,7 +6,7 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 14:20:03 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/07 13:19:37 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:15:00 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,6 +113,7 @@ char	**ft_split(const char *str, char c);
 void	build_t_point_grid(t_session *instance, int filein);
 void	free_t_points(t_point **grid, int height);
 int		check_bounds(t_point *start, t_point *end);
+void	offset_for_angle(t_session *instance, t_vector2 *offset);
 /*	->INSTANCE<-	*/
 int		open_file(t_session *instance, char *argv);
 void	mlx_shutdown(t_session *instance);

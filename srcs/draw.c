@@ -6,59 +6,43 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/21 15:40:06 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/07 13:26:32 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:21:44 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../.minilibx/mlx.h"
-/*
- * Initialize DDA (Digital Differential Analyzer) algorithm parameters for line drawing.
- * Sets the current position to the start point and calculates the deltas (differences)
- * in x and y coordinates between the start and end points. Determines the number of
- * steps required to draw the line based on the maximum delta value. Sets the increment
- * size for each step in x and y directions.
- * fmax -> returns largest of two numbers, fabs -> returns absolute value of a number
- */
-void	init_dda(t_dda *params, t_point *start, t_point *end)
+
+void	init_dda(t_dda *dda, t_point *start, t_point *end)
 {
-	params->current_x = start->x;
-	params->current_y = start->y;
-	params->delta_x = end->x - start->x;
-	params->delta_y = end->y - start->y;
-	params->step = fmax(fabs(params->delta_x), fabs(params->delta_y)); // why not abs?
-	params->x_inc = params->delta_x / params->step;
-	params->y_inc = params->delta_y / params->step;
+	dda->current_x = start->x;
+	dda->current_y = start->y;
+	dda->delta_x = end->x - start->x;
+	dda->delta_y = end->y - start->y;
+	dda->step = fmax(fabs(dda->delta_x), fabs(dda->delta_y));
+	dda->x_inc = dda->delta_x / dda->step;
+	dda->y_inc = dda->delta_y / dda->step;
 }
-/*
-* initiliaze values for line drawing algorithm
-* checks for color in t_point, if no color is found, one is given based on z value
-* color pixel acorddlingly to ratio beetwen start and end points
-*/
+
 void	put_pixels(t_session *instance, t_point *start, t_point *end)
 {
-	t_dda	params; // name id dda instead of params, to get ddd->current_x etc
+	t_dda	dda;
 	t_color	color;
 	int		pixel_color;
 
-	init_dda(&params, start, end);
+	init_dda(&dda, start, end);
 	init_color(&color, start, end);
-	while (color.i <= params.step)
+	while (color.i <= dda.step)
 	{
-		color.step = color.i / params.step;
+		color.step = color.i / dda.step;
 		pixel_color = create_rgb(color.step, color.start, color.end);
 		my_mlx_pixel_put(&instance->mlx_img,
-			round(params.current_x), round(params.current_y), pixel_color);
-		params.current_x += params.x_inc;
-		params.current_y += params.y_inc;
+			round(dda.current_x), round(dda.current_y), pixel_color);
+		dda.current_x += dda.x_inc;
+		dda.current_y += dda.y_inc;
 		color.i++;
 	}
 }
-/*
-*	check line orientation, create temporary t_points to hold values from struct array index
-*	convert points to isometric if needed, scales and centers points to window size
-*	send points to put_pixels
-*/
 
 void	draw_lines(t_session *instance, int x, int y, int orientation)
 {
@@ -75,9 +59,6 @@ void	draw_lines(t_session *instance, int x, int y, int orientation)
 		return ;
 	put_pixels(instance, &start, &end);
 }
-/*
-* iterate all points in struct array and draw corresponding lines within broundaries
-*/
 
 void	draw_map(t_session *instance)
 {
@@ -101,7 +82,7 @@ void	draw_map(t_session *instance)
 
 void	reverse_draw_map(t_session *instance)
 {
-	t_vector2 i;
+	t_vector2	i;
 
 	i.y = instance->height - 1;
 	while (i.y >= 0)

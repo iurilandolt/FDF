@@ -6,20 +6,13 @@
 /*   By: rlandolt <rlandolt@student.42lisboa.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/23 22:06:52 by rlandolt          #+#    #+#             */
-/*   Updated: 2024/01/07 12:45:54 by rlandolt         ###   ########.fr       */
+/*   Updated: 2024/01/08 16:18:28 by rlandolt         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../.minilibx/mlx.h"
 
-/*
- * Converts Cartesian coordinates to isometric coordinates for both start and end points.
- * 30 degrees (or 0.523599 radians) isometric.
- * - Skewing: Calculated by (x - y) and (x + y) operations.
- * - Rotation: Applied using cosine and sine of 30 degrees to the skewed coordinates.
- * - Elevation Adjustment: The z-coordinate value is subtracted from the y-coordinate.
- */
 void	convert_points(t_session *instance, t_point *start, t_point *end)
 {
 	t_vector2	tmp;
@@ -42,11 +35,6 @@ void	convert_points(t_session *instance, t_point *start, t_point *end)
 	end->y = (tmp.x + tmp.y) * sin(DEG30) - end->z;
 }
 
-/*
- * Scales the points based on the window size and the diagonal length of the grid.
- * calculates a scaling factor that ensures the grid fits proportionally
- * within the window.
- */
 void	scale_points(t_session *instance, t_point *start, t_point *end)
 {
 	float	diagonal;
@@ -61,10 +49,6 @@ void	scale_points(t_session *instance, t_point *start, t_point *end)
 	end->y = round(end->y * factor);
 	end->z = round(end->z * instance->factor);
 }
-/*
-* Adjusts the position of the points by a fixed offset,
-* allows translation.
-*/
 
 void	center_points(t_session *instance, t_point *start, t_point *end)
 {
@@ -73,32 +57,16 @@ void	center_points(t_session *instance, t_point *start, t_point *end)
 	offset.x = instance->offset.x;
 	offset.y = instance->offset.y;
 	if (instance->iso)
-	{
-		if (instance->angle > 0 && instance->angle < 3)
-		{
-			offset.x += W_WIDTH * (0.4 * instance->factor);
-			offset.y += W_HEIGHT * ( 0.4 * instance->factor);
-		}
-		else if (instance->angle > 3 && instance->angle < 4)
-		{
-			offset.x += W_WIDTH * (0.1 * instance->factor);
-			offset.y += W_HEIGHT * (0.7 * instance->factor);
-		}
-		else if (instance->angle > 4)
-		{
-			offset.x -= W_WIDTH * 0.2 * (instance->factor);
-			offset.y += W_HEIGHT * 0.4 * ( instance->factor);
-		}
-	}
+		offset_for_angle(instance, &offset);
 	start->x += offset.x;
 	start->y += offset.y;
 	end->x += offset.x;
 	end->y += offset.y;
 }
 
-void rotate_zaxis(t_session *instance, t_point *start, t_point *end)
+void	rotate_zaxis(t_session *instance, t_point *start, t_point *end)
 {
-	t_vector2 tmp;
+	t_vector2	tmp;
 
 	tmp.x = start->x;
 	tmp.y = start->y;
@@ -108,17 +76,13 @@ void rotate_zaxis(t_session *instance, t_point *start, t_point *end)
 	tmp.y = end->y;
 	end->x = tmp.x * cos(instance->angle) - tmp.y * sin(instance->angle);
 	end->y = tmp.x * sin(instance->angle) + tmp.y * cos(instance->angle);
-
 }
-
-
 
 void	transform_points(t_session *instance, t_point *start, t_point *end)
 {
 	scale_points(instance, start, end);
-
 	if (instance->angle != 0)
-		rotate_zaxis(instance ,start, end);
+		rotate_zaxis(instance, start, end);
 	convert_points(instance, start, end);
 	center_points(instance, start, end);
 }
