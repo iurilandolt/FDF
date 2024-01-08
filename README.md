@@ -176,116 +176,128 @@ void	build_t_point_grid(t_session *instance, int filein)
 	free(line);
 }
 ```
-with our struct ready we can now start to print our t_points across the window.
-for this we must define a relationship in scale, how many t_points in the x axis do we have in relation to the window width,
-and how many in the y axis in relation to the window height.
-we also need to consider that the window might not be a square, and that scaling to an aspect ratio that is not 1:1 will distort the shape of our object.
-for scaling in screens it is common to use the diagonal of the screen, i did something similar;
+With our struct ready, we can now begin to display our `t_points` across the window. For this, we need to define a relationship in scale:
+
+- Determine how many `t_points` in the x-axis relate to the window width.
+- Determine how many `t_points` in the y-axis relate to the window height.
+
+It's crucial to consider that the window might not be square. Scaling to an aspect ratio that is not 1:1 will distort the shape of our object. For scaling on screens, it's common to use the diagonal of the screen. I implemented something similar:
+```c	
 
 	diagonal = hypot(instance->width, instance->height);
 	factor = instance->factor * W_HEIGHT / diagonal;
 	point->x = round(start->x * factor);
 	point->y = round(start->y * factor);
 	point->z = round(start->z * instance->factor);
+```
+After establishing a scale relationship between our map and the window, we need to decide where the first point will be 'printed'. I use a `vector2` variable to divide the screen horizontally and vertically, determining which pixel will represent my `t_point{0,0}`.
 
-after setting a relation of scale beetween our map and the window we need to decide where the first point will be printed.
-i use a vector2 variable to devide the screen horizontaly and verticaly and decide wich pixel will be my t_point{0,0}.
-you'll most likely find some division ratios more adequate for particular perspectives since the size and shape of the volume might change considerably.
-
+You'll likely find that some division ratios are more suitable for specific perspectives, as the size and shape of the volume might change considerably. Experiment with these ratios to find the most visually appealing.
+```c	
 	instance->offset.x = W_WIDTH * 0.4;
 	instance->offset.y = W_HEIGHT * 0.2;
+```
+At this stage, we have a 2D image representing a top-down, parallel perspective view of our map in the form of a grid. Our objective is to transform this projection into an isometric view. There are several ways to achieve this; theoretically, any viewing angle between 30º and 45º can be considered isometric.
 
-at this point we only have a 2D image, a top down, paralel perspective view of our map in the shape of a grid.
-our goal is to convert this projection to isometric, there a couple of ways to achieve this, in theory any viewing angle beetween 30º and 45º can be considered isometric.
-i used a formula with the cosine and sine functions on a 30º value.
-
+I employed a formula using the cosine and sine functions with a 30º angle to achieve this transformation. This approach effectively alters the 2D grid into an isometric projection.
+```c	
 	(tmp.x - tmp.y) * cos(DEG30);
 	(tmp.x + tmp.y) * sin(DEG30) - tmp->z;
-
-for rotation around the z axis you can apply similar logic
-
+```
+For rotation around the z axis you can apply similar logic.
+```c	
 	tmp.x * cos(instance->angle) - tmp.y * sin(instance->angle);
 	tmp.x * sin(instance->angle) + tmp.y * cos(instance->angle);
+```
+After scaling, converting, rotating, and centering, we need to draw lines between all the points. For this, a line drawing algorithm, such as DDA (Digital Differential Analyzer) or Bresenham, is required. I find DDA easier to implement. Here's a quick rundown of the DDA algorithm:
 
-after scaling, converting, rotating and centering we need to draw lines beetween all the points.
-for that you'll need to implement a line drawing algorithm, such as DDA or Bresenham.
-i find DDA easier to implement, here is a quick run down
+We'll need reference to
 
-we'll need reference to
+- start & end points (x,y)
+```c
+current_x = start->x;
+current_y = start->y;
+ ```
+- difference beetween start and end (x,y)
+ ```c
+delta_x = end->x - start->x;
+delta_y = end->y - start->y;
+ ``` 
+- the number of steps beetween start and end
+```c 
+step = fmax(fabs(params->delta_x), fabs(params->delta_y)); 
+```
+increment size beetween steps (x,y)
+```c
+x_inc = params->delta_x / params->step;
+y_inc = params->delta_y / params->step;
+``` 
+Knowing this, you can **iterate all steps** between start and end, incrementing `x` and `y` by their corresponding increment values at every iteration. This should allow you to use your `pixel_put` function and 'paint' every pixel between those two pixels, forming a line.
+ ```c
+current_x += params.x_inc;
+current_y += params.y_inc;
+ ```  
+If you intend to apply color to projections from files without embedded values, you can base the coloration on the image angle or the z-value to achieve gradients. Given that you know the number of 'steps' in a line, this information can be used for **color interpolation** between the start and end colors.
 
-start & end points (x,y)
+ ```c
+	while (i <= params.step)
+		color.step = i / params.step;
+		pixel_color = create_rgb(color.step, color.start, color.end);
 
-	current_x = start->x;
-	current_y = start->y;
- 
-difference beetween start and end (x,y)
- 
- 	delta_x = end->x - start->x;
-	delta_y = end->y - start->y;
- 
- the number of steps beetween start and end
-   
-	step = fmax(fabs(params->delta_x), fabs(params->delta_y)); 
- 
- increment size beetween steps (x,y)
- 
-	x_inc = params->delta_x / params->step;
-	y_inc = params->delta_y / params->step;
- 
-knowing this you can iterate all steps beetween start and end incrementing x and y by their corresponding increment values at every iteration,
-this should allow you to use your pixel_put function and 'paint' every pixel beetween those two pixels forming a line.
+int	create_rgb(float ratio, int start, int end)
+{
+	int	r;
+	int	g;
+	int	b;
 
-	current_x += params.x_inc;
-	current_y += params.y_inc;
-   
-if you intend to apply color to the projections whose files do not bring any embebed values, you can do that based on the image angle, or the z value achieving gradients.
-since you know the number of 'steps' in a line, you can use that value to implement some kind of interpolation beetween the start and the end color.
+	r = interpolate(ratio, (start >> 16) & 0xFF, (end >> 16) & 0xFF);
+	g = interpolate(ratio, (start >> 8) & 0xFF, (end >> 8) & 0xFF);
+	b = interpolate(ratio, start & 0xFF, end & 0xFF);
+	return ((r << 16) | (g << 8) | b);
+}
+```
+> [Learn about Color in minilibx](https://harm-smits.github.io/42docs/libs/minilibx/colors.html)
 
-		while (i <= params.step)
-			color.step = i / params.step;
-			pixel_color = create_rgb(color.step, color.start, color.end);
+With the image drawn, we find ourselves confined within the `mlx_loop()`, lacking interaction capabilities with the image or window – not even the close button. To overcome this limitation, we need to utilize **hooks**.
 
-	int	create_rgb(float ratio, int start, int end)
+Hooks act as signal generators and receivers that operate asynchronously to our loop. They enable us to modify values used by the loop or even terminate it. For some useful examples on implementing hooks, check out [this resource](https://harm-smits.github.io/42docs/libs/minilibx/hooks.html).
+ ```c
+mlx_hook(instance->mlx_win, KeyPress, KeyPressMask, handle_key, instance);
+mlx_hook(instance->mlx_win, DestroyNotify, StructureNotifyMask, exit_hook, instance);
+mlx_key_hook(instance->mlx_win, handle_key, instance);
+```
+Every time we change a value in our projection, it's necessary to update the image on our window. This means re-running `draw()` and `mlx_put_image_to_window()`. However, before doing this, we must reset all the pixels in our window to black. If not, the previous image will persist, causing a tearing effect.
+ ```c
+void	mlx_update(t_session *instance)
+{
+	float	angle;
+
+	clear_image(instance, BLACK);
+	draw_map(instance);
+	mlx_put_image_to_window(instance->mlx_ser, instance->mlx_win, instance->mlx_img.img, 0, 0);
+}
+ ```
+To properly end the loop and shut down the graphical server, it's crucial to close the program immediately after ending the loop to avoid segmentation faults. The `mlx` library provides specific functions for this purpose. Additionally, addressing any allocated memory at this point is essential.
+ ```c
+void	mlx_shutdown(t_session *instance)
+{
+	mlx_loop_end(instance->mlx_ser);
+	if (instance->mlx_img.img)
+		mlx_destroy_image(instance->mlx_ser, instance->mlx_img.img);
+	if (instance->mlx_win)
 	{
-		int	r;
-		int	g;
-		int	b;
-	
-		r = interpolate(ratio, (start >> 16) & 0xFF, (end >> 16) & 0xFF);
-		g = interpolate(ratio, (start >> 8) & 0xFF, (end >> 8) & 0xFF);
-		b = interpolate(ratio, start & 0xFF, end & 0xFF);
-		return ((r << 16) | (g << 8) | b);
+		mlx_destroy_window(instance->mlx_ser, instance->mlx_win);
+		instance->mlx_win = NULL;
 	}
- 
-with the image drawn we are stuck in the mlx_loop(), there is no way to interact with the image or with the window, not even the close button.
-for this we need to use 'hooks'
-
-hooks are basically signal generators and recievers that will work asyncronous to our loop, allowing us to change values being used by the loop or even ending it.
--> https://harm-smits.github.io/42docs/libs/minilibx/hooks.html <- here are a few usefull examples.
-
-	mlx_hook(instance->mlx_win, KeyPress, KeyPressMask, handle_key, instance);
-	mlx_hook(instance->mlx_win, DestroyNotify, StructureNotifyMask, exit_hook, instance);
-   	mlx_key_hook(instance->mlx_win, handle_key, instance);
-
-to properly end the loop and shutdown the graphical server we should have in account that we must close the program imidiatly after ending the loop in order not to get any segfaults.
-the mlx library has specific functions to deal with this, allocated memory should also be addressed at this point.
-
-	void	mlx_shutdown(t_session *instance)
+	if (instance->mlx_ser)
 	{
-		mlx_loop_end(instance->mlx_ser);
-		if (instance->mlx_img.img)
-			mlx_destroy_image(instance->mlx_ser, instance->mlx_img.img);
-		if (instance->mlx_win)
-		{
-			mlx_destroy_window(instance->mlx_ser, instance->mlx_win);
-			instance->mlx_win = NULL;
-		}
-		if (instance->mlx_ser)
-		{
-			mlx_destroy_display(instance->mlx_ser);
-			free(instance->mlx_ser);
-		}
-		free_t_points(instance->source, instance->height);
-		free(instance);
-		exit(0);
+		mlx_destroy_display(instance->mlx_ser);
+		free(instance->mlx_ser);
 	}
+	free_t_points(instance->source, instance->height);
+	free(instance);
+	exit(0);
+}
+ ```
+Congratulations you made it to the end of this boring readme file.
+Have a great day.
