@@ -1,34 +1,3 @@
-# fdf  - fil de fer
-
-fdf is the first program from the 42 curriculum that has a graphical interface/window.
-it renders 3D wireframe images from a file with cartesian coordinates using the minilibx library.
-
--> https://harm-smits.github.io/42docs/libs/minilibx
-
-<sub>this project complies with the 42 norm.</sub>
-
-<sub>`- no for loops.`</sub>
-
-<sub>`- no declarations/initializations on control structures.`</sub>
-
-<sub>`- functions have a max of 5 arguments and a total of 25 lines and 80 tokens.`</sub>
-
-<sub>`- maximum 5 functions per file.`</sub>
-
-<sub>`- no functions from any libray except for;`</sub>
-
-<sub>`open() / close() / read / write / malloc / free`</sub>
-
-<sub>`perror / strerror / exit`</sub>
-
-<sub>`anything from math.h`</sub>
-
-minilibx wworks with a graphical server like X-Window and allows us to instanciate a window and manipulate the pixels inside it.
-graphical servers in linux have a much extensivier use around network but we do not explore this in this project.
-it is however a good ideia to get familiar with the concepts of display, window and image among other things.
-
--> https://www.techopedia.com/definition/10101/x-window-system
-
 # fdf - fil de fer
 
 **fdf** is the first program from the 42 curriculum featuring a graphical interface/window. It renders 3D wireframe images from a file with cartesian coordinates, utilizing the **minilibx** library.
@@ -36,14 +5,23 @@ it is however a good ideia to get familiar with the concepts of display, window 
 > [Learn more about minilibx](https://harm-smits.github.io/42docs/libs/minilibx)
 
 <sub>_This project aligns with the 42 norm:_</sub>
+
 <sub>- _No for loops._</sub>
+
 <sub>- _No declarations/initializations in control structures._</sub>
+
 <sub>- _Functions are limited to a max of 5 arguments, 25 lines, and 80 tokens._</sub>
+
 <sub>- _A maximum of 5 functions per file._</sub>
+
 <sub>- _Use of only specific library functions:_</sub>
+
  <sub> - _`open()`, `close()`, `read`, `write`, `malloc`, `free`_</sub>
+ 
  <sub> - _`perror`, `strerror`, `exit`_</sub>
+ 
  <sub> - _Any function from `math.h`_</sub>
+ 
 
 **minilibx** works with graphical servers like X-Window, allowing the instantiation of windows and pixel manipulation. While graphical servers in Linux are extensively used in networking, this project doesn't delve into that aspect. However, it's an excellent opportunity to acquaint yourself with concepts like display, window, and image, among others.
 
