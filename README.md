@@ -5,21 +5,21 @@ it renders 3D wireframe images from a file with cartesian coordinates using the 
 
 -> https://harm-smits.github.io/42docs/libs/minilibx
 
-this project complies with the 42 Network norms.
+this project complies with the 42 norm.
 
-no for loops.
+`- no for loops.`
 
-no declarations/initializations on control structures.
+`- no declarations/initializations on control structures.`
 
-functions have a max of 5 arguments and a total of 25 lines and 80 tokens.
+`- functions have a max of 5 arguments and a total of 25 lines and 80 tokens.`
 
-maximum 5 functions per file.
+`- maximum 5 functions per file.`
 
-no functions from any libray except for,
+`- no functions from any libray except for;`
 
-open() / close() / read / write / malloc / free
-perror / strerror / exit
-anything from math.h
+`open() / close() / read / write / malloc / free`
+`perror / strerror / exit`
+`anything from math.h`
 
 minilibx wworks with a graphical server like X-Window and allows us to instanciate a window and manipulate the pixels inside it.
 graphical servers in linux have a much extensivier use around network but we do not explore this in this project.
@@ -87,7 +87,7 @@ to keep the window open we use;
 	mlx_loop(instance->mlx_ser);
 
 Due to norm compliance this project relies extensinvely in structs.
-This will allows us to hold a lot of information regarding the constant variables of our client, graphical server window, the state of the image, and the state of the 3D volume we are representing, among other things like color, vectors, drawing algorithm paramaters etc.
+This will allows us to hold a lot of information regarding the variables of our client, graphical server window, the state of the image, and the state of the 3D volume we are representing, among other things like color, vectors, drawing algorithm paramaters etc.
 It is also a cheaky way not to waste lines/colums with variable initializations/declarations.
 
 	typedef struct s_session
