@@ -108,33 +108,30 @@ typedef struct s_session
 	t_data		mlx_img;
 }	t_session;
 ```
-in regards to parsing we wont go into much detail, however there are some key points;
+In regards to parsing, we won't delve into too much detail, but there are some key points to note:
 
-the file must exist :D
+- **The file must exist** (obviously! 😄).
+- Our binary must have permission to read the file.
+- The file extension must be `.fdf`.
+- The file must be readable. Specifically:
+  - The number of elements per line must be consistent across all lines, forming a parallelepiped grid.
 
-our binary must have permision to read the file.
+`.fdf` files come in two variants:
+- Standard files with only XYZ information.
+- Files with embedded color. 
 
-the file extension must be '.fdf'
+This means each element of the 2D character map can either be an integer, or an integer followed by a hexadecimal value representing color (e.g., `0` or `0,0xff` respectively).
 
-the file must be readable, i.e; 
-
-the number of elements per line must be the same for every line. the grid is a paralelipipede.
-
-.fdf files have two variants, standard files with only XYZ information, and files with embebed color.
- so each element of the 2D character map can either be an int, or an int follow by a hex value representing color.
- 
- so either '0' or '0,0xff respectively' 
-  
-after this we create a 2D array of t_point structs that will hold the cartesian coordinates from our input file.
-
-	typedef struct s_point
-	{
-		int		x;
-		int		y;
-		int		z;
-		int		c;
-	}	t_point;
-
+After parsing, we create a 2D array of `t_point` structs to hold the Cartesian coordinates from our input file.
+```c
+typedef struct s_point
+{
+	int		x;
+	int		y;
+	int		z;
+	int		c;
+}	t_point;
+```
 you can easily achieve this with variations of the split, atoi, and get_next_line functions.
 
 	
