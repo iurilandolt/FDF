@@ -5,7 +5,7 @@ it renders 3D wireframe images from a file with cartesian coordinates using the 
 
 -> https://harm-smits.github.io/42docs/libs/minilibx
 
-this project complies with the 42 norm.
+<sub>this project complies with the 42 norm.
 
 `- no for loops.`
 
@@ -19,7 +19,7 @@ this project complies with the 42 norm.
 
 `open() / close() / read / write / malloc / free`
 `perror / strerror / exit`
-`anything from math.h`
+`anything from math.h`</sub>
 
 minilibx wworks with a graphical server like X-Window and allows us to instanciate a window and manipulate the pixels inside it.
 graphical servers in linux have a much extensivier use around network but we do not explore this in this project.
