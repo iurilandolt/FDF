@@ -5,15 +5,8 @@ it renders 3D wireframe images from a file with cartesian coordinates using the 
 
 -> https://harm-smits.github.io/42docs/libs/minilibx
 
-<sub>this project complies with the 42 norm.</sub>
-<sub>`- no for loops.`</sub>
-<sub>`- no declarations/initializations on control structures.`</sub>
-<sub>`- functions have a max of 5 arguments and a total of 25 lines and 80 tokens.`</sub>
-<sub>`- maximum 5 functions per file.`</sub>
-<sub>`- no functions from any libray except for;`</sub>
-<sub>`open() / close() / read / write / malloc / free`</sub>
-<sub>`perror / strerror / exit`</sub>
-<sub>`anything from math.h`</sub>
+
+
 
 minilibx wworks with a graphical server like X-Window and allows us to instanciate a window and manipulate the pixels inside it.
 graphical servers in linux have a much extensivier use around network but we do not explore this in this project.
@@ -286,5 +279,21 @@ the mlx library has specific functions to deal with this, allocated memory shoul
 		exit(0);
 	}
 
- 
+<sub>this project complies with the 42 norm.</sub>
+
+<sub>`- no for loops.`</sub>
+
+<sub>`- no declarations/initializations on control structures.`</sub>
+
+<sub>`- functions have a max of 5 arguments and a total of 25 lines and 80 tokens.`</sub>
+
+<sub>`- maximum 5 functions per file.`</sub>
+
+<sub>`- no functions from any libray except for;`</sub>
+
+<sub>`open() / close() / read / write / malloc / free`</sub>
+
+<sub>`perror / strerror / exit`</sub>
+
+<sub>`anything from math.h`</sub>
 
