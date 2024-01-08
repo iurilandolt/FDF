@@ -132,52 +132,51 @@ typedef struct s_point
 	int		c;
 }	t_point;
 ```
-you can easily achieve this with variations of the split, atoi, and get_next_line functions.
+This can easily be achieved with variations of the split, atoi, and get_next_line functions.
+```c	
+void	set_t_point_values(t_point *point, int x, int y, char *tab)
+{
+	char		**color;
 
-	
-	void	set_t_point_values(t_point *point, int x, int y, char *tab)
-	{
-		char		**color;
-	
-		color = ft_split(tab, ',');
-		point->x = x;
-		point->y = y;
-		point->z = ft_atoi(tab);
-		point->c = 0;
-		if (color[1])
-			point->c = ft_atohex(color[1]);
-		clear(color);
-	}
+	color = ft_split(tab, ',');
+	point->x = x;
+	point->y = y;
+	point->z = ft_atoi(tab);
+	point->c = 0;
+	if (color[1])
+		point->c = ft_atohex(color[1]);
+	clear(color);
+}
 
-	void	build_t_point_grid(t_session *instance, int filein)
+void	build_t_point_grid(t_session *instance, int filein)
+{
+	char		*line;
+	char		**tab;
+	t_vector2	i;
+
+	i.y = 0;
+	instance->source = (t_point **)malloc(sizeof(t_point *) * instance->height);
+	line = get_next_line(filein);
+	while (line && i.y < instance->height)
 	{
-		char		*line;
-		char		**tab;
-		t_vector2	i;
-	
-		i.y = 0;
-		instance->source = (t_point **)malloc(sizeof(t_point *) * instance->height);
-		line = get_next_line(filein);
-		while (line && i.y < instance->height)
+		i.x = 0;
+		tab = ft_split(line, ' ');
+		instance->width = tab_size(tab);
+		instance->source[i.y] = (t_point *)malloc(sizeof(
+					t_point) * instance->width);
+		while (tab[i.x] && i.x < instance->width)
 		{
-			i.x = 0;
-			tab = ft_split(line, ' ');
-			instance->width = tab_size(tab);
-			instance->source[i.y] = (t_point *)malloc(sizeof(
-						t_point) * instance->width);
-			while (tab[i.x] && i.x < instance->width)
-			{
-				set_t_point_values(&instance->source[i.y][i.x], i.x, i.y, tab[i.x]);
-				i.x++;
-			}
-			clear(tab);
-			free(line);
-			i.y++;
-			line = get_next_line(filein);
+			set_t_point_values(&instance->source[i.y][i.x], i.x, i.y, tab[i.x]);
+			i.x++;
 		}
+		clear(tab);
 		free(line);
+		i.y++;
+		line = get_next_line(filein);
 	}
-
+	free(line);
+}
+```
 with our struct ready we can now start to print our t_points across the window.
 for this we must define a relationship in scale, how many t_points in the x axis do we have in relation to the window width,
 and how many in the y axis in relation to the window height.
