@@ -1,6 +1,6 @@
-# fdf - fil de fer
+# FDF - Fil de Fer
 
-**fdf** is the first program from the 42 curriculum featuring a graphical interface/window. It renders 3D wireframe images from a file with cartesian coordinates, utilizing the **minilibx** library.
+**FDF** is the first program from the 42 curriculum featuring a graphical interface/window. It renders 3D wireframe images from a file with cartesian coordinates, utilizing the **minilibx** library.
 
 > [Learn more about minilibx](https://harm-smits.github.io/42docs/libs/minilibx)
 
@@ -23,7 +23,7 @@
  <sub> - _Any function from `math.h`_</sub>
  
 
-**minilibx** works with graphical servers like X-Window, allowing the instantiation of windows and pixel manipulation. While graphical servers in Linux are extensively used in networking, this project doesn't delve into that aspect. However, it's an excellent opportunity to acquaint yourself with concepts like display, window, and image, among others.
+**Minilibx** works with graphical servers like X-Window, allowing the instantiation of windows and pixel manipulation. While graphical servers in Linux are extensively used in networking, this project doesn't delve into that aspect. However, it's an excellent opportunity to acquaint yourself with concepts like display, window, and image, among others.
 
 > [Learn about X-Window System](https://www.techopedia.com/definition/10101/x-window-system)
 
