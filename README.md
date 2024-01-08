@@ -162,8 +162,7 @@ void	build_t_point_grid(t_session *instance, int filein)
 		i.x = 0;
 		tab = ft_split(line, ' ');
 		instance->width = tab_size(tab);
-		instance->source[i.y] = (t_point *)malloc(sizeof(
-					t_point) * instance->width);
+		instance->source[i.y] = (t_point *)malloc(sizeof(t_point) * instance->width);
 		while (tab[i.x] && i.x < instance->width)
 		{
 			set_t_point_values(&instance->source[i.y][i.x], i.x, i.y, tab[i.x]);
