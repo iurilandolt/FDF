@@ -4,7 +4,7 @@
 
 > [Learn more about minilibx](https://harm-smits.github.io/42docs/libs/minilibx)
 
-<sub>_This project aligns with the 42 norm:_</sub>
+<sub>_This project follows the 42 norm:_</sub>
 
 <sub>- _No for loops._</sub>
 
@@ -28,84 +28,86 @@
 > [Learn about X-Window System](https://www.techopedia.com/definition/10101/x-window-system)
 
 
-it is mandatory to use a specific struct given to us by the library documentation;
+It is mandatory to use a specific struct given to us by the library documentation:
+```c
+typedef struct s_data
+{
+    void	*img;
+    char	*addr;
+    int	bits_per_pixel;
+    int	line_length;
+    int	endian;
+}		t_data;	
+```
+This holds pointers to where the image we draw is stored and also to where each pixel's information is stored before we push the image to the window.
 
-	typedef struct s_data
-	{
-		void	*img;
-		char	*addr;
-		int	bits_per_pixel;
-		int	line_length;
-		int	endian;
-	}		t_data;
- 
-this holds pointers to where the image we draw is stored and also to where each pixels information is stored before we push the image to the window;
+With this library, we can write the pixel values and coordinates to be stored in a linear character array. The library has functions that handle the arithmetic of where each pixel goes, where each line ends and a new one begins, etc.
 
-with this library we can write the pixel values and coordinates to be stored in a linear character array, 
-the library handles the arithmetic to know where each pixel goes where, where each line ends and a new one begins etc.
+This method, as opposed to changing the pixels directly in the window without waiting for the next frame, which is really slow, is a lot more efficient. It allows us to push a complete image to the window in a single frame. Here is an example of a function that allows us to write the image to a `t_data` structure and then use the minilibx library function mlx_put_image_to_window() to instantly push the image to the window.
+```c
+void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
+{
+	char	*dst;
 
-this method as opposite to changing the pixels directly in the window without waiting for the next frame, wich is really slow, is a lot more efficient,
-and allows us to push a complete image to the window in a single frame, here is an example of a function that allows us to write the image to a t_data structure and then
-use the minilibx libary function: mlx_put_image_to_window() to instantly push the iamge to the window.
+	if (x < 0 || y < 0 || x > W_WIDTH - 1 || y > W_HEIGHT - 1)
+		return ;
+	dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
+	*(unsigned int *)dst = color;
+}
 
-	void	my_mlx_pixel_put(t_data *data, int x, int y, int color)
-	{
-		char	*dst;
-	
-		if (x < 0 || y < 0 || x > W_WIDTH - 1 || y > W_HEIGHT - 1)
-			return ;
-		dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-		*(unsigned int *)dst = color;
-	}
+mlx_put_image_to_window(instance->mlx_ser, instance->mlx_win, instance->mlx_img.img, 0, 0);
+```
 
-	mlx_put_image_to_window(instance->mlx_ser, instance->mlx_win, instance->mlx_img.img, 0, 0);
+To initialize the graphical server and assign a window to it, there is a series of steps we must take. Here is an example of a startup sequence:
 
-to initialize the graphical server and assign a window to it there is a series of steps we must take.
-here is an example of a startup sequence; 
-
-iniitate graphical server, 
-
-alloc new window, alloc new image, 
-
-set values and pointers for the t_data struct, 
-
-keep the window open.
-
- 	void	mlx_startup(t_session *instance)
-	{
-		instance->mlx_ser = mlx_init();
-		instance->mlx_win = mlx_new_window(instance->mlx_ser, W_WIDTH, W_HEIGHT, "42 FDF");
-		instance->mlx_img.img = mlx_new_image(instance->mlx_ser, W_WIDTH, W_HEIGHT);
-		instance->mlx_img.addr = mlx_get_data_addr(instance->mlx_img.img, 
-				&instance->mlx_img.bits_per_pixel, &instance->mlx_img.line_length,
-				&instance->mlx_img.endian);
-		if (!instance->mlx_ser || !instance->mlx_win || !instance->mlx_img.img)
-			mlx_shutdown(instance);
-	}
-
+1. Initiate graphical server
+2. Allocate new window
+3. Allocate new image
+4. Set values and pointers for the `t_data` struct
+5. Keep the window open
+```c
+void	mlx_startup(t_session *instance)
+{
+	instance->mlx_ser = mlx_init();
+	instance->mlx_win = mlx_new_window(instance->mlx_ser, W_WIDTH, W_HEIGHT, "42 FDF");
+	instance->mlx_img.img = mlx_new_image(instance->mlx_ser, W_WIDTH, W_HEIGHT);
+	instance->mlx_img.addr = mlx_get_data_addr(instance->mlx_img.img, 
+			&instance->mlx_img.bits_per_pixel, &instance->mlx_img.line_length,
+			&instance->mlx_img.endian);
+	if (!instance->mlx_ser || !instance->mlx_win || !instance->mlx_img.img)
+		mlx_shutdown(instance);
+}
+```
 to keep the window open we use;
 
 	mlx_loop(instance->mlx_ser);
 
-Due to norm compliance this project relies extensinvely in structs.
-This will allows us to hold a lot of information regarding the variables of our client, graphical server window, the state of the image, and the state of the 3D volume we are representing, among other things like color, vectors, drawing algorithm paramaters etc.
-It is also a cheaky way not to waste lines/colums with variable initializations/declarations.
+Due to norm compliance, this project relies extensively on structs. This approach allows us to hold a lot of information regarding various aspects of our application, such as:
 
-	typedef struct s_session
-	{
-		t_point		**source;
-		t_vector2	offset;
-		int			height;
-		int			width;
-		float		factor;
-		float		angle;
-		bool		iso;
-		bool		ort;
-		void		*mlx_ser;
-		void		*mlx_win;
-		t_data		mlx_img;
-	}	t_session;
+- Variables of our client
+- Graphical server window
+- The state of the image
+- The state of the 3D volume we are representing
 
+Additionally, it includes other elements like color, vectors, drawing algorithm parameters and anything we might need to have access to later when we try to interact with the image during runtime. 
+Utilizing structs is also a cheeky way not to waste lines/columns with variable initializations/declarations.
+
+```c
+typedef struct s_session
+{
+	t_point		**source;
+	t_vector2	offset;
+	int			height;
+	int			width;
+	float		factor;
+	float		angle;
+	bool		iso;
+	bool		ort;
+	void		*mlx_ser;
+	void		*mlx_win;
+	t_data		mlx_img;
+}	t_session;
+```
 in regards to parsing we wont go into much detail, however there are some key points;
 
 the file must exist :D
