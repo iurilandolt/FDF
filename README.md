@@ -17,11 +17,11 @@
 <sub>- _Use of only specific library functions:_</sub>
 
  <sub> - _`open()`, `close()`, `read`, `write`, `malloc`, `free`_</sub>
- 
+
  <sub> - _`perror`, `strerror`, `exit`_</sub>
- 
+
  <sub> - _Any function from `math.h`_</sub>
- 
+
 
 **Minilibx** works with graphical servers like X-Window, allowing the instantiation of windows and pixel manipulation. While graphical servers in Linux are extensively used in networking, this project doesn't delve into that aspect. However, it's an excellent opportunity to acquaint yourself with concepts like display, window, and image, among others.
 
@@ -37,7 +37,7 @@ typedef struct s_data
     int	bits_per_pixel;
     int	line_length;
     int	endian;
-}		t_data;	
+}		t_data;
 ```
 This holds pointers to where the image we draw is stored and also to where each pixel's information is stored before we push the image to the window.
 
@@ -71,7 +71,7 @@ void	mlx_startup(t_session *instance)
 	instance->mlx_ser = mlx_init();
 	instance->mlx_win = mlx_new_window(instance->mlx_ser, W_WIDTH, W_HEIGHT, "42 FDF");
 	instance->mlx_img.img = mlx_new_image(instance->mlx_ser, W_WIDTH, W_HEIGHT);
-	instance->mlx_img.addr = mlx_get_data_addr(instance->mlx_img.img, 
+	instance->mlx_img.addr = mlx_get_data_addr(instance->mlx_img.img,
 			&instance->mlx_img.bits_per_pixel, &instance->mlx_img.line_length,
 			&instance->mlx_img.endian);
 	if (!instance->mlx_ser || !instance->mlx_win || !instance->mlx_img.img)
@@ -89,7 +89,7 @@ Due to norm compliance, this project relies extensively on structs. This approac
 - The state of the image
 - The state of the 3D volume we are representing
 
-Additionally, it includes other elements like color, vectors, drawing algorithm parameters and anything we might need to have access to later when we try to interact with the image during runtime. 
+Additionally, it includes other elements like color, vectors, drawing algorithm parameters and anything we might need to have access to later when we try to interact with the image during runtime.
 Utilizing structs is also a cheeky way not to waste lines/columns with variable initializations/declarations.
 
 ```c
@@ -118,7 +118,7 @@ In regards to parsing, we won't delve into too much detail, but there are some k
 
 `.fdf` files come in two variants:
 - Standard files with only XYZ information.
-- Files with embedded color. 
+- Files with embedded color.
 
 This means each element of the 2D character map can either be an integer, or an integer followed by a hexadecimal value representing color (e.g., `0` or `0,0xff` respectively).
 
@@ -133,7 +133,7 @@ typedef struct s_point
 }	t_point;
 ```
 This can easily be achieved with variations of the split, atoi, and get_next_line functions.
-```c	
+```c
 void	set_t_point_values(t_point *point, int x, int y, char *tab)
 {
 	char		**color;
@@ -182,7 +182,7 @@ With our struct ready, we can now begin to display our `t_points` across the win
 - Determine how many `t_points` in the y-axis relate to the window height.
 
 It's crucial to consider that the window might not be square. Scaling to an aspect ratio that is not 1:1 will distort the shape of our object. For scaling on screens, it's common to use the diagonal of the screen. I implemented something similar:
-```c	
+```c
 
 	diagonal = hypot(instance->width, instance->height);
 	factor = instance->factor * W_HEIGHT / diagonal;
@@ -193,19 +193,19 @@ It's crucial to consider that the window might not be square. Scaling to an aspe
 After establishing a scale relationship between our map and the window, we need to decide where the first point will be 'printed'. I use a `vector2` variable to divide the screen horizontally and vertically, determining which pixel will represent my `t_point{0,0}`.
 
 You'll likely find that some division ratios are more suitable for specific perspectives, as the size and shape of the volume might change considerably. Experiment with these ratios to find the most visually appealing.
-```c	
+```c
 	instance->offset.x = W_WIDTH * 0.4;
 	instance->offset.y = W_HEIGHT * 0.2;
 ```
 At this stage, we have a 2D image representing a top-down, parallel perspective view of our map in the form of a grid. Our objective is to transform this projection into an isometric view. There are several ways to achieve this; theoretically, any viewing angle between 30º and 45º can be considered isometric.
 
 I employed a formula using the cosine and sine functions with a 30º angle to achieve this transformation. This approach effectively alters the 2D grid into an isometric projection.
-```c	
+```c
 	(tmp.x - tmp.y) * cos(DEG30);
 	(tmp.x + tmp.y) * sin(DEG30) - tmp->z;
 ```
 For rotation around the z axis you can apply similar logic.
-```c	
+```c
 	tmp.x * cos(instance->angle) - tmp.y * sin(instance->angle);
 	tmp.x * sin(instance->angle) + tmp.y * cos(instance->angle);
 ```
@@ -222,21 +222,21 @@ current_y = start->y;
  ```c
 delta_x = end->x - start->x;
 delta_y = end->y - start->y;
- ``` 
+ ```
 - the number of steps beetween start and end
-```c 
-step = fmax(fabs(params->delta_x), fabs(params->delta_y)); 
+```c
+step = fmax(fabs(params->delta_x), fabs(params->delta_y));
 ```
 - increment size beetween steps (x,y)
 ```c
 x_inc = params->delta_x / params->step;
 y_inc = params->delta_y / params->step;
-``` 
+```
 Knowing this, you can **iterate all steps** between start and end, incrementing `x` and `y` by their corresponding increment values at every iteration. This should allow you to use your `pixel_put` function and 'paint' every pixel between those two pixels, forming a line.
  ```c
 current_x += params.x_inc;
 current_y += params.y_inc;
- ```  
+ ```
 If you intend to apply color to projections from files without embedded values, you can base the coloration on the image angle or the z-value to achieve gradients. Given that you know the number of 'steps' in a line, this information can be used for **color interpolation** between the start and end colors.
 
  ```c

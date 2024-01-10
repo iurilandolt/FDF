@@ -63,8 +63,6 @@ void draw_map(t_session *instance) {
     draw_map_recursive(instance, 0, 0);
 }
 
-
-draw_circle(&instance->mlx_img, WIDTH / 2, HEIGHT /2, 500, 0x00FF0000);
 void draw_circle(t_data *data, int cx, int cy, int radius, int color)
 {
 	for (int y = cy - radius; y <= cy + radius; ++y)
